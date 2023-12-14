@@ -1,0 +1,34 @@
+{
+  "HEADER": {
+    "SEARCH": {
+      "TEXT": "Search.."
+    }
+  },
+  "MENUITEMS": {
+    "USER": {
+      "POST": "Manager"
+    },
+
+    "PROPERTIES": {
+      "TEXT": "Realty",
+      "LIST": {
+        "PROPERTY-LIST": "Properties",
+        "PROPERTY-ADD": "Property Registration"
+      }
+    },
+    "USERDATA": {
+      "TEXT": "User",
+      "LIST": {
+        "REGISTER-USER": "Register User",
+        "CHANGE-PASSWORD": "Change Password"
+      }
+    },
+    "ADMIN": {
+      "TEXT": "Admin",
+      "LIST": {
+        "COUNTRY": "Country",
+        "CITY": "City"
+      }
+    }
+  }
+}

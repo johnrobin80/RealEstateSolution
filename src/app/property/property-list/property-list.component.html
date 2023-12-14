@@ -1,0 +1,40 @@
+<section class="main-content">
+  <ul class="breadcrumb breadcrumb-style">
+    <li class="breadcrumb-item">
+      <h5 class="page-title m-b-0">Card</h5>
+    </li>
+    <li class="breadcrumb-item bcrumb-1">
+      <a routerLink="/dashboard/main"> <i class="fas fa-home font-17"></i></a>
+    </li>
+    <li class="breadcrumb-item">Advanced</li>
+    <li class="breadcrumb-item">Card</li>
+  </ul>
+  <div class="section-body">
+    <div class="row breadcrumb">
+      <!-- <div class="col-12 col-md-6 col-lg-3" *ngFor="let number of numbers">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h4>Card Header</h4>
+          </div>
+          <div class="card-body">
+            <p>Card <code>.card-primary</code></p>
+            <div>{{ number }}</div>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div class="col-12 col-md-6 col-lg-3" *ngFor="let number of numbers"> -->
+      <div class="col-12 col-md-6 col-lg-3" *ngFor="let realty of filteredData">
+        <app-property-card [cardRealtyData]="realty"></app-property-card>
+      </div>
+      <mat-paginator
+        [length]="realtyData.length"
+        [pageSize]="size"
+        [pageIndex]="page"
+        [pageSizeOptions]="[2, 4, 8, 10, 12]"
+        (page)="getData($event)"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</section>

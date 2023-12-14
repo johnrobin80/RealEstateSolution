@@ -1,0 +1,36 @@
+<span> Verify details before clicking "Submit" button: </span>
+<ul *ngIf="validationData.length > 0">
+  <li *ngFor="let data of validationData">
+    <span>{{ data.header.validationHeader }}</span>
+    <ul>
+      <li *ngFor="let detail of data.details">{{ detail.validationDetail }}</li>
+    </ul>
+  </li>
+</ul>
+
+<!-- <h6>
+  <u>Please check the below validation errors:</u> {{ validationData.length }}
+</h6>
+<ul>
+  <li *ngFor="let data of validationData" detailData1="data.details">
+    {{ data.header.validationHeader }}
+  </li>
+  <ul>
+    <li *ngFor="let detail of detailData1">{{ detail.validationDetail }}</li>
+  </ul>
+</ul> -->
+
+<!-- <ul>
+  <li>Test1</li>
+  <ul>
+    <li>Test2</li>
+    <li>Test3</li>
+    <li>Test4</li>
+  </ul>
+  <li>Test2</li>
+  <ul>
+    <li>Test2</li>
+    <li>Test3</li>
+    <li>Test4</li>
+  </ul>
+</ul> -->

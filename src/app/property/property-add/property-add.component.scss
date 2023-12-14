@@ -1,0 +1,213 @@
+// .textarea-style {
+//   width: 100%;
+//   border-radius: 9px;
+//   border-width: 0.5px;
+//   border-color: #bdc1c5;
+// }
+textarea {
+  width: 100%;
+  border-radius: 9px;
+  border-width: 0.1px;
+  border-color: #bdc1c5;
+}
+
+textarea:focus {
+  background-color: #fefeff;
+  outline-color: #95a0f4 !important;
+  outline-width: 0.1px solid;
+  box-shadow: none;
+}
+
+.validation-list {
+  background-color: transparent;
+  padding-left: 20px;
+  color: red;
+}
+
+.stepper-control {
+  padding-top: 1px;
+}
+
+.card-header {
+  background-color: #efccb8;
+  border-color: #efccb8;
+  border-radius: 12px;
+}
+
+.card-inner-header {
+  background-color: #cdcbc9;
+  border-color: #cdcbc9;
+  border-radius: 8px;
+  width: 100%;
+  padding: 7px 0 7px 10px;
+  font-size: 15px;
+  color: black;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.button-row {
+  display: table-cell;
+  max-width: 600px;
+}
+
+.button-row > button {
+  border-radius: 44px;
+  margin-right: 5px;
+  padding: 0px 35px;
+}
+
+//Global stepper header steps-bar style
+//  background: rgb(255, 198, 198);
+::ng-deep .mat-horizontal-stepper-header-container {
+  background: rgba(188, 227, 236, 0.133);
+  border-bottom: 1px solid #1b85ff;
+  padding: 10px 0 10px 0;
+  border-radius: 14px 14px 0 0;
+}
+
+//Global stepper boby style
+::ng-deep .mat-horizontal-content-container {
+  padding: 30px 0 20px 20px !important;
+  background-color: rgb(241, 241, 241);
+  border-radius: 0 0 14px 14px;
+}
+
+//Global stepper step horizontal line style
+::ng-deep .mat-stepper-horizontal-line {
+  border-top-color: rgb(255, 0, 0) !important;
+  border-top-style: dashed !important;
+  border-top-width: 2px !important;
+}
+
+//Stepper step-box style
+::ng-deep .mat-primary.mat-step-header {
+  background-color: rgb(255, 255, 255);
+  border-radius: 50px;
+  border: 1px solid rgba(155, 175, 194, 0.377);
+  height: 45px;
+}
+
+//Stepper step-box hover effect
+::ng-deep .mat-primary.mat-step-header:hover:not([aria-disabled]),
+::ng-deep .mat-primary.mat-step-header:hover([aria-disabled]) {
+  background-color: rgba(154, 191, 226, 0.74);
+  border: 1px solid #1b85ff;
+}
+
+//Stepper step-box focus effect
+::ng-deep .mat-primary.mat-step-header.cdk-keyboard-focused,
+::ng-deep .mat-primary.mat-step-header.cdk-program-focused {
+  background-color: rgba(27, 133, 255, 0.25);
+  border: 1px solid rgba(154, 191, 226, 0.336);
+}
+
+/****For outer frame property change when deactive (deselected)******/
+
+//Deselected stepper box
+::ng-deep .mat-primary.mat-step-header.mat-horizontal-stepper-header {
+  &[ng-reflect-selected="false"].mat-step-header {
+    background-color: rgb(255, 255, 255);
+  }
+}
+
+/****For outer frame property change when active (selected)******/
+
+//Selected stepper box
+::ng-deep .mat-primary.mat-step-header.mat-horizontal-stepper-header {
+  &[ng-reflect-selected="true"].mat-step-header {
+    background-color: rgba(154, 191, 226, 0.336);
+    border: 1px solid #1b85ff !important;
+    backdrop-filter: blur(5px);
+  }
+}
+
+//Change style in edit step
+::ng-deep
+  .mat-primary.mat-step-header.mat-horizontal-stepper-header:has(
+    .mat-step-icon-state-edit
+  ) {
+  background-color: rgba(0, 128, 0, 0.267) !important;
+  border: 1px solid green !important;
+  backdrop-filter: blur(5px);
+}
+
+//Change style in done mode
+::ng-deep
+  .mat-primary.mat-step-header.mat-horizontal-stepper-header:has(
+    .mat-step-icon-state-done
+  ) {
+  background-color: rgba(0, 128, 0, 0.267) !important;
+  border: 1px solid green !important;
+}
+
+//Change stepper step box label style
+::ng-deep .mat-primary.mat-step-header.mat-step-label {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+//Change label color when tab is selected
+::ng-deep .mat-primary.mat-step-header .mat-step-label-selected {
+  color: #0665d2 !important;
+}
+
+//Change stepper step-box active text when tab is done
+// color: #30a805 !important;
+::ng-deep .mat-primary.mat-step-header .mat-step-label.mat-step-label-active {
+  color: #461b02 !important;
+  font-weight: 600 !important;
+}
+
+//Change stepper step icons circle
+::ng-deep .mat-primary.mat-step-header .mat-step-icon {
+  background-color: #bdbdbd;
+  color: #fff;
+  transition: all 0.5s ease-in-out;
+  margin: auto 7px auto 0;
+  outline: 2px solid #bdbdbd;
+  outline-offset: 1px;
+}
+
+//Change stepper step selected icons circle
+::ng-deep .mat-primary.mat-step-header .mat-step-icon-selected {
+  background-color: #1b85ff;
+  color: #fff;
+  outline: 2px solid #1b85ff;
+  outline-offset: 2px;
+}
+
+//Change stepper step selected icons circle image (edit mode)
+//background-image: url("https://upload.wikimedia.org/wikipedia/commons/8/8c/White_check_mark_in_dark_green_rounded_square.svg");
+::ng-deep .mat-primary.mat-step-header .mat-step-icon-state-edit {
+  background-color: #39a805;
+  color: #fff;
+  background-image: url("/assets/images/realty/tick-box2.svg");
+  background-size: 13px;
+  background-position-y: 5px;
+  background-position-x: 5px;
+  transform: rotate(20deg);
+  background-repeat: no-repeat;
+  outline: 2px solid #39a805;
+  outline-offset: 2px;
+}
+
+//Remove ByDefault icon in stepper
+::ng-deep .mat-step-icon .mat-icon {
+  display: none;
+}
+
+//Change stepper step selected icons circle image (done mode)
+//  background-image: url("https://upload.wikimedia.org/wikipedia/commons/8/8c/White_check_mark_in_dark_green_rounded_square.svg");
+::ng-deep .mat-primary.mat-step-header .mat-step-icon-state-done {
+  background-color: #39a805;
+  color: #fff;
+  background-image: url("/assets/images/realty/tick-box2.svg");
+  background-size: 13px;
+  background-position-y: 5px;
+  background-position-x: 5px;
+  transform: rotate(20deg);
+  background-repeat: no-repeat;
+  outline: 2px solid #39a805;
+  outline-offset: 2px;
+}

@@ -1,0 +1,727 @@
+<section class="main-content">
+  <ul class="breadcrumb breadcrumb-style">
+    <li class="breadcrumb-item">
+      <h5 class="page-title m-b-0">Property Registration</h5>
+    </li>
+    <li class="breadcrumb-item bcrumb-1">
+      <a routerLink="/dashboard/main"> <i class="fas fa-home font-17"></i></a>
+    </li>
+    <li class="breadcrumb-item">Realty</li>
+    <li class="breadcrumb-item">Property Registration</li>
+  </ul>
+  <div class="section-body">
+    <div class="row mat-app-background mat-typography">
+      <!-- <div class="col-xl-8 col-md-8 col-lg-8 col-sm-8"> -->
+      <div class="col-xl-10 col-md-10 col-lg-10 col-sm-10">
+        <div class="card">
+          <div>
+            <div class="card-header">
+              <h4><u>Property Registration</u></h4>
+            </div>
+          </div>
+          <ng-template #content>
+            <div class="div-spinner-outer">
+              <div class="div-spinner-inner">
+                <app-loading-spinner></app-loading-spinner>
+              </div>
+            </div>
+          </ng-template>
+          <div class="stepper-control">
+            <!--*******************************BASIC INFO*********************************-->
+            <mat-stepper
+              linear="false"
+              #stepper
+              animationDuration="1000"
+              (selectionChange)="onStepChange($event)"
+            >
+              <mat-step [stepControl]="basicInfo" label="Basic Info">
+                <form [formGroup]="basicInfo">
+                  <div class="row">
+                    <div class="col-6 col-md-6 col-lg-6 col-sm-6">
+                      <div class="card" style="border: 2px solid #cdcbc9">
+                        <div class="card-inner-header">Basic Info</div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <label for="iWantTo"
+                                >I want to<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <mat-chip-listbox
+                                aria-label="SellRent"
+                                formControlName="sellRent"
+                              >
+                                <mat-chip-option
+                                  style="padding: 0 10px 0 10px"
+                                  [value]="sellrent"
+                                  *ngFor="let sellrent of businessMode"
+                                  >{{ sellrent }}
+                                </mat-chip-option>
+                              </mat-chip-listbox>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <label for="bhk"
+                                >BHK<span class="text-danger">*</span></label
+                              >
+                              <mat-chip-listbox
+                                aria-label="BHK"
+                                formControlName="bhk"
+                              >
+                                <mat-chip-option
+                                  style="padding: 0 10px 0 10px"
+                                  [value]="bhk"
+                                  *ngFor="let bhk of homeCapacity"
+                                  >{{ bhk }}
+                                </mat-chip-option>
+                              </mat-chip-listbox>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <label for="propertyType"
+                                >Property Type<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <mat-chip-listbox
+                                aria-label="PropertyType"
+                                formControlName="propertyType"
+                              >
+                                <mat-chip-option
+                                  style="padding: 0 10px 0 10px"
+                                  [value]="pType"
+                                  *ngFor="let pType of propertyTypes"
+                                  >{{ pType }}
+                                </mat-chip-option>
+                              </mat-chip-listbox>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <label for="furnishType"
+                                >Furnish Type<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <mat-chip-listbox
+                                aria-label="FurnishType"
+                                formControlName="furnishType"
+                              >
+                                <mat-chip-option
+                                  style="padding: 0 10px 0 10px"
+                                  [value]="fType"
+                                  *ngFor="let fType of furnishTypes"
+                                  >{{ fType }}
+                                </mat-chip-option>
+                              </mat-chip-listbox>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-10">
+                              <label for="building"
+                                >Building/Society/Project<span
+                                  class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="buildingAndArea"
+                              />
+                              <span
+                                *ngIf="
+                                  !buildingAndArea.valid &&
+                                  (buildingAndArea.touched || userSubmitted)
+                                "
+                                class="error-block"
+                              >
+                                <span
+                                  *ngIf="buildingAndArea.errors?.['required']"
+                                  >Please provide Building details</span
+                                >
+                              </span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-6">
+                              <label for="city"
+                                >City<span class="text-danger">*</span></label
+                              >
+                              <select
+                                id="inputState"
+                                class="form-select"
+                                #city
+                                formControlName="cityList"
+                                (change)="onCitySelectedValue(city.value)"
+                              >
+                                <option selected [value]="null">
+                                  Choose...
+                                </option>
+                                <option [value]="1">City 1</option>
+                                <option [value]="2">City 2</option>
+                              </select>
+                              <span
+                                *ngIf="
+                                  !cityList.valid &&
+                                  (cityList.touched || userSubmitted)
+                                "
+                                class="error-block"
+                              >
+                                Please choose the city
+                              </span>
+                            </div>
+                          </div>
+
+                          <div class="card-body">
+                            <div class="button-row">
+                              <button
+                                [disabled]="!basicInfo.valid"
+                                matStepperNext
+                                mat-flat-button
+                                color="primary"
+                              >
+                                Next >>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class="col-4 col-md-4 col-lg-4 col-sm-4 pull-right">
+                      <div
+                        style="
+                          background-color: transparent;
+                          padding-left: 20px;
+                          color: red;
+                        "
+                      >
+                        <app-property-validation-listing></app-property-validation-listing>
+                      </div>
+                    </div> -->
+                  </div>
+                </form>
+              </mat-step>
+              <!--*******************************PRICING & AREA*********************************-->
+              <mat-step [stepControl]="pricingAndArea" label="Pricing & Area">
+                <form [formGroup]="pricingAndArea">
+                  <div class="row">
+                    <div class="col-6 col-md-6 col-lg-6 col-sm-6">
+                      <div class="card" style="border: 2px solid #cdcbc9">
+                        <div class="card-inner-header">Pricing & Area</div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="form-group col-md-6">
+                              <label for="PriceInUsd"
+                                >Price (in USD)<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="priceInUsd"
+                              />
+                              <span
+                                *ngIf="
+                                  !priceInUsd.valid &&
+                                  (priceInUsd.touched || userSubmitted)
+                                "
+                                class="error-block"
+                              >
+                                <span *ngIf="priceInUsd.errors?.['required']"
+                                  >Please provide the price</span
+                                >
+                              </span>
+                            </div>
+                            <!-- </div>
+                          <div class="row"> -->
+                            <div class="form-group col-md-6">
+                              <label for="SecurityInUsd"
+                                >Security (in USD)</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="securityInUsd"
+                              />
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-6">
+                              <label for="MaintenanceInUsd"
+                                >Maintenance (in USD)</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="maintenanceInUsd"
+                              />
+                            </div>
+                            <!-- </div>
+                          <div class="row"> -->
+                            <div class="form-group col-md-6">
+                              <label for="BuiltArea"
+                                >Built Area (Sq.Feet)<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="builtArea"
+                              />
+                              <span
+                                *ngIf="
+                                  !builtArea.valid &&
+                                  (builtArea.touched || userSubmitted)
+                                "
+                                class="error-block"
+                              >
+                                <span *ngIf="builtArea.errors?.['required']"
+                                  >Please provide the build area</span
+                                >
+                              </span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-6">
+                              <label for="CarpetArea"
+                                >Carpet Area (Sq.Feet)</label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="carpetArea"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="card-body">
+                            <div class="button-row">
+                              <button
+                                matStepperPrevious
+                                mat-flat-button
+                                color="accent"
+                              >
+                                << Back
+                              </button>
+
+                              <button
+                                [disabled]="!pricingAndArea.valid"
+                                matStepperNext
+                                mat-flat-button
+                                color="primary"
+                              >
+                                Next >>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </mat-step>
+              <!--*******************************ADDRESS*********************************-->
+              <mat-step [stepControl]="address" label="Address">
+                <form [formGroup]="address">
+                  <div class="row">
+                    <div class="col-6 col-md-6 col-lg-6 col-sm-5">
+                      <div class="card" style="border: 2px solid #cdcbc9">
+                        <div class="card-inner-header">Address</div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="form-group col-md-6">
+                              <label for="Floor"
+                                >Floor<span class="text-danger">*</span></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="floor"
+                              />
+                              <span
+                                *ngIf="
+                                  !floor.valid &&
+                                  (floor.touched || userSubmitted)
+                                "
+                                class="error-block"
+                              >
+                                <span *ngIf="floor.errors?.['required']"
+                                  >Please provide the floor details</span
+                                >
+                              </span>
+                            </div>
+                            <!-- </div>
+                          <div class="row"> -->
+                            <div class="form-group col-md-6">
+                              <label for="TotalFloors">Total Floors</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="totalFloors"
+                              />
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <label for="Address"
+                                >Address<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="addressDetails"
+                              />
+                              <span
+                                *ngIf="
+                                  !addressDetails.valid &&
+                                  (addressDetails.touched || userSubmitted)
+                                "
+                                class="error-block"
+                              >
+                                <span
+                                  *ngIf="addressDetails.errors?.['required']"
+                                  >Please provide the address</span
+                                >
+                              </span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <label for="Landmark">Landmark</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="landMark"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="card-body">
+                            <div class="button-row">
+                              <button
+                                matStepperPrevious
+                                mat-flat-button
+                                color="accent"
+                              >
+                                << Back
+                              </button>
+
+                              <button
+                                [disabled]="!address.valid"
+                                matStepperNext
+                                mat-flat-button
+                                color="primary"
+                              >
+                                Next >>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </mat-step>
+              <!--*******************************OTHER DETAILS*********************************-->
+              <mat-step [stepControl]="otherDetails" label="Other Details">
+                <form [formGroup]="otherDetails">
+                  <div class="row">
+                    <div class="col-6 col-md-6 col-lg-6 col-sm-6">
+                      <div class="card" style="border: 2px solid #cdcbc9">
+                        <div class="card-inner-header">Other Details</div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <label for="readyToMove"
+                                >Ready to move<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <mat-chip-listbox
+                                aria-label="ReadyToMove"
+                                formControlName="readyToMove"
+                              >
+                                <mat-chip-option
+                                  style="padding: 0 10px 0 10px"
+                                  [value]="rtm"
+                                  *ngFor="let rtm of readyToMoveProperty"
+                                  >{{ rtm }}
+                                </mat-chip-option>
+                              </mat-chip-listbox>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <label for="gatedCommunity"
+                                >Gated Community<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <mat-chip-listbox
+                                aria-label="GatedCommunity"
+                                formControlName="gatedCommunity"
+                              >
+                                <mat-chip-option
+                                  style="padding: 0 10px 0 10px"
+                                  [value]="gc"
+                                  *ngFor="let gc of gatedCommunityProperty"
+                                  >{{ gc }}
+                                </mat-chip-option>
+                              </mat-chip-listbox>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <label for="gatedCommunity"
+                                >Main Entrance<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <mat-chip-listbox
+                                aria-label="MainEntrance"
+                                formControlName="mainEntrance"
+                              >
+                                <mat-chip-option
+                                  style="padding: 0 10px 0 10px"
+                                  [value]="me"
+                                  *ngFor="let me of mainEntranceProperty"
+                                  >{{ me }}
+                                </mat-chip-option>
+                              </mat-chip-listbox>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-5">
+                              <label for="AvailableFrom"
+                                >Available From<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <div class="input-group">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="yyyy-mm-dd"
+                                  name="dp"
+                                  ngbDatepicker
+                                  #d="ngbDatepicker"
+                                  formControlName="availableFrom"
+                                />
+                                <div class="input-group-append">
+                                  <button
+                                    class="btn btn-outline-secondary calendar"
+                                    (click)="d.toggle()"
+                                    type="button"
+                                  >
+                                    <i
+                                      class="fa fa-calendar"
+                                      style="cursor: pointer"
+                                    ></i>
+                                  </button>
+                                </div>
+                                <span
+                                  *ngIf="
+                                    !availableFrom.valid &&
+                                    (availableFrom.touched || userSubmitted)
+                                  "
+                                  class="error-block"
+                                >
+                                  <span
+                                    *ngIf="availableFrom.errors?.['required']"
+                                    >Please provide the date available</span
+                                  >
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-4">
+                              <label for="AgeOfProperty"
+                                >Age Of Property<span class="text-danger"
+                                  >*</span
+                                ></label
+                              >
+                              <input
+                                type="text"
+                                class="form-control"
+                                formControlName="ageOfProperty"
+                              />
+                              <span
+                                *ngIf="
+                                  !ageOfProperty.valid &&
+                                  (ageOfProperty.touched || userSubmitted)
+                                "
+                                class="error-block"
+                              >
+                                <span *ngIf="ageOfProperty.errors?.['required']"
+                                  >Please provide the age</span
+                                >
+                              </span>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-12">
+                              <label for="Comment">Comment</label>
+                              <!-- <textarea
+                                class="form-control"
+                                formControlName="description"
+                              ></textarea> -->
+                              <textarea
+                                autosize
+                                autosize
+                                class="my-textarea textarea-style"
+                                formControlName="comment"
+                              >
+                              </textarea>
+                            </div>
+                          </div>
+                          <div class="card-body">
+                            <div class="button-row">
+                              <button
+                                matStepperPrevious
+                                mat-flat-button
+                                color="accent"
+                              >
+                                << Back
+                              </button>
+
+                              <button
+                                matStepperNext
+                                mat-flat-button
+                                color="primary"
+                              >
+                                Next >>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="card-body">
+                    <div class="button-row">
+                      <button matStepperPrevious mat-flat-button color="accent">
+                        << Back
+                      </button>
+
+                      <button matStepperNext mat-flat-button color="primary">
+                        Next >>
+                      </button>
+                    </div>
+                  </div> -->
+                </form>
+              </mat-step>
+              <!--*******************************PHOTOS*********************************-->
+              <mat-step [stepControl]="photos" label="Photos">
+                <form [formGroup]="photos">
+                  <div class="row">
+                    <div class="col-10 col-md-10 col-lg-10 col-sm-10">
+                      <!-- <div class="col-6 col-md-6 col-lg-6 col-sm-6"> -->
+                      <div class="card" style="border: 2px solid #cdcbc9">
+                        <div class="card-inner-header">Photos</div>
+                        <div class="card-body">
+                          <div class="row">
+                            <app-file-upload></app-file-upload>
+                            <!-- <app-file-upload></app-file-upload> -->
+                            <!-- <input
+                              type="file"
+                              class="custom-file-input"
+                              id="customFile"
+                            /> -->
+                          </div>
+                          <div class="card-body">
+                            <div class="button-row">
+                              <button
+                                matStepperPrevious
+                                mat-flat-button
+                                color="accent"
+                              >
+                                << Back
+                              </button>
+
+                              <button
+                                matStepperNext
+                                mat-flat-button
+                                color="primary"
+                              >
+                                Next >>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </mat-step>
+              <mat-step label="Done">
+                <form [formGroup]="pricingAndArea">
+                  <div class="row">
+                    <div class="col-6 col-md-6 col-lg-6 col-sm-6">
+                      <div class="card" style="border: 2px solid #cdcbc9">
+                        <div class="card-inner-header">Done</div>
+                        <div class="card-body">
+                          <p>You are now done.</p>
+                          <div class="button-row">
+                            <button
+                              matStepperPrevious
+                              mat-flat-button
+                              color="accent"
+                            >
+                              << Back
+                            </button>
+                            <button
+                              mat-flat-button
+                              color="warn"
+                              (click)="resetStepper()"
+                            >
+                              Reset
+                            </button>
+                          </div>
+                          <div class="card-footer">
+                            <button
+                              class="btn btn-primary"
+                              (click)="onSubmit()"
+                              [disabled]="validationHeaderAndDetail.length > 0"
+                            >
+                              Submit
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="col-4 col-md-4 col-lg-4 col-sm-4 pull-right"
+                      *ngIf="validationHeaderAndDetail.length > 0"
+                    >
+                      <div
+                        *ngIf="isvalidationErrorList; else validationList"
+                      ></div>
+                      <ng-template #validationList>
+                        <div class="validation-list">
+                          <app-property-validation-listing
+                            [validationData]="validationHeaderAndDetail"
+                          ></app-property-validation-listing>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </form>
+              </mat-step>
+            </mat-stepper>
+            <div><label for=""></label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

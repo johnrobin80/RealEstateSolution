@@ -1,0 +1,358 @@
+<section class="main-content">
+  <ul class="breadcrumb breadcrumb-style">
+    <li class="breadcrumb-item">
+      <h5 class="page-title m-b-0">Country List</h5>
+    </li>
+    <li class="breadcrumb-item bcrumb-1">
+      <a routerLink="/dashboard/main"> <i class="fas fa-home font-17"></i></a>
+    </li>
+    <li class="breadcrumb-item active">Admin</li>
+    <li class="breadcrumb-item active">Country</li>
+  </ul>
+
+  <!-- <div class="row">
+      <div class="col-12 col-md-6 col-lg-6">
+        <div class="card">
+          <div class="card-header">
+            <div class="row col-12 col-md-12 col-lg-12">
+              <div class="col-md-6">
+                <h4><u>Countries</u></h4>
+              </div>
+            </div>
+          </div>
+          <div class="card-body"> -->
+  <div class="section-body">
+    <div class="row clearfix">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card col-lg-6 col-md-6 col-sm-6 col-xs-6">
+          <div class="p-10">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="row m-0">
+                  <!-- <div class="col-auto p-0">
+                    <div class="ngxTableHeader">
+                      <div class="table-title">
+                        <h2><strong>Advance Table</strong></h2>
+                      </div>
+                    </div>
+                  </div> -->
+                  <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 p-0">
+                    <div class="ngxTableHeader">
+                      <div class="table-search-area">
+                        <div>
+                          <label for="search-input"
+                            ><i class="material-icons search-icon"
+                              >search</i
+                            ></label
+                          >
+                          <input
+                            placeholder="Search"
+                            type="text"
+                            class="browser-default search-field"
+                            aria-label="Search box"
+                          />
+                        </div>
+                      </div>
+                      <div class="header-buttons-left">
+                        <div class="tbl-btn-style">
+                          <button
+                            class="btn btn-icon icon-left btn-primary rounded-button"
+                            (click)="addRow(addRecord)"
+                          >
+                            <i class="material-icons">add</i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <ngx-datatable
+              #table
+              class="material"
+              [rows]="countries"
+              [loadingIndicator]="loadingIndicator"
+              [columnMode]="ColumnMode.force"
+              [headerHeight]="60"
+              [footerHeight]="80"
+              rowHeight="auto"
+              [limit]="3"
+              [scrollbarH]="scrollBarHorizontal"
+              [reorderable]="reorderable"
+              [selected]="selected"
+              [selectionType]="SelectionType.single"
+            >
+              <!-- <ngx-datatable-column [width]="30" name="Id">
+                <ng-template
+                  let-row="row"
+                  let-value="value"
+                  let-i="index"
+                  ngx-datatable-cell-template
+                >
+                  <div class="name-col-style">
+                    <div>{{ row.id }}</div>
+                  </div>
+                </ng-template>
+              </ngx-datatable-column> -->
+
+              <ngx-datatable-column name="Country">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{ row.country }}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="CreatedOn">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{ row.createdon }}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="Status">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <div
+                    *ngIf="row.status === 'Active'"
+                    class="badge-outline col-green"
+                  >
+                    {{ row.status }}
+                  </div>
+                  <div
+                    *ngIf="row.status === 'Completed'"
+                    class="badge-outline col-red"
+                  >
+                    {{ row.status }}
+                  </div>
+                  <div
+                    *ngIf="row.status === 'Pending'"
+                    class="badge-outline col-indigo"
+                  >
+                    {{ row.status }}
+                  </div>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column
+                [width]="100"
+                name="Actions"
+                [sortable]="false"
+              >
+                <ng-template
+                  let-value="value"
+                  let-row="row"
+                  let-rowIndex="rowIndex"
+                  ngx-datatable-cell-template
+                >
+                  <span>
+                    <button
+                      class="btn btn-tbl-edit h-auto"
+                      (click)="editRow(row, rowIndex)"
+                      placement="top"
+                      ngbTooltip="edit"
+                    >
+                      <i class="fas fa-pen"></i>
+                    </button>
+                    <button
+                      class="btn btn-tbl-delete h-auto"
+                      (click)="deleteSingleRow(row)"
+                      placement="top"
+                      ngbTooltip="delete"
+                    >
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                  </span>
+                </ng-template>
+              </ngx-datatable-column>
+            </ngx-datatable>
+
+            <ng-container>
+              <div fxLayout="row wrap"></div>
+              <img [src]="" />
+            </ng-container>
+
+            <!-- Add Record Modal Window -->
+            <ng-template #addRecord let-modal>
+              <!-- <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2"> -->
+              <div class="modal-header editRowModal">
+                <h4 class="modal-title" id="modal-basic-title">
+                  <div class="table-modal-header">
+                    <div>
+                      <div class="fw-bold p-t-9 font-17">
+                        <u>Add Country</u>
+                      </div>
+                    </div>
+                  </div>
+                </h4>
+                <!-- <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="modal.dismiss()"
+                >
+                  <span aria-hidden="true"
+                    ><i class="material-icons">close</i></span
+                  >
+                </button> -->
+                <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="closeModalForm()"
+                >
+                  <span aria-hidden="true"
+                    ><i class="material-icons">close</i></span
+                  >
+                </button>
+              </div>
+              <div class="modal-body">
+                <form class="register-form" [formGroup]="register">
+                  <div class="input-field col s12 d-none">
+                    <input
+                      formControlName="id"
+                      class="form-control"
+                      type="hidden"
+                    />
+                  </div>
+
+                  <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                      <label>Country <span class="text-danger">*</span></label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Country"
+                        formControlName="country"
+                        name="country"
+                      />
+                      <small
+                        class="form-text text-danger"
+                        *ngIf="!Country.valid && Country.touched"
+                      >
+                        Country is required</small
+                      >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        formControlName="active"
+                      />&nbsp;
+                      <label class="form-check-label" for="active">
+                        Active
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button
+                      type="submit"
+                      class="btn btn-primary"
+                      (click)="addCountry()"
+                      [disabled]="!Country.valid"
+                    >
+                      Submit
+                    </button>
+                    <!-- <button
+                      type="button"
+                      class="btn btn-light"
+                      (click)="modal.close('Close click')"
+                    >
+                      Close
+                    </button> -->
+                    <button
+                      type="button"
+                      class="btn btn-light"
+                      (click)="closeModalForm()"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <!-- </div> -->
+            </ng-template>
+            <!-- </div> -->
+            <!-- </div> -->
+
+            <!-- <div class="card">
+          <div class="card-header">
+            <div class="row col-12 col-md-12 col-lg-12">
+              <div class="col-md-6">
+                <h4><u>Countries</u></h4>
+              </div>
+              <div class="col-md-6">
+                <div
+                  class="col-md-1.5 position-absolute top-0 end-0"
+                  style="padding-top: 40px; padding-right: 100px"
+                >
+                  Page Size
+                </div>
+                <div
+                  class="col-md-1.5 position-absolute top-0 end-0"
+                  style="padding-top: 31px; padding-right: 25px"
+                >
+                  <select id="inputState" class="form-select">
+                    <option selected value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">15</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Created At</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let country of countries; let Index = index">
+                  <td>{{ country.id }}</td>
+                  <td>{{ country.name }}</td>
+                  <td>{{ country.createdon }}</td>
+                  <td>
+                    <div class="badge badge-success">
+                      {{ country.status }}
+                    </div>
+                  </td>
+                  <td>
+                    <button
+                      class="btn btn-primary"
+                      (click)="onAlert(country.id)"
+                    >
+                      Detail
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+         <div class="card-footer text-end">
+            <nav class="d-inline-block">
+              <ul class="pagination mb-0">
+                <li class="page-item">
+                  <ngb-pagination
+                    [collectionSize]="collectionSize"
+                    [pageSize]="pageSize"
+                    [(page)]="page"
+                    [boundaryLinks]="true"
+                  ></ngb-pagination>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div> -->
+            <!-- </div>
+    </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

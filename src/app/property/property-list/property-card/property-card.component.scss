@@ -1,0 +1,65 @@
+/* .row-width {
+  width: 250px;
+}
+
+.propImg {
+  height: 200px;
+  overflow: hidden;
+} */
+
+.card {
+  min-height: 350px;
+}
+
+.card-body h3 {
+  font-family: fantasy, "Courier New", Courier, monospace;
+  color: #0069d9;
+}
+
+.font-highlight {
+  font-style: italic;
+  color: red;
+}
+
+.card-img-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.card:hover img {
+  transform: scale(1.05, 1.05);
+  transition-duration: 500ms;
+  transition-timing-function: ease-out;
+  height: 200px;
+  opacity: 0.5;
+}
+
+.card img {
+  transform: scale(1, 1);
+  transition-duration: 500ms;
+  transition-timing-function: ease-out;
+  height: 200px;
+}
+
+.member-icons {
+  position: absolute;
+  bottom: -10%;
+  left: 0;
+  right: 0;
+  margin-right: auto;
+  margin-left: auto;
+  opacity: 0;
+}
+
+.card-img-wrapper:hover .member-icons {
+  bottom: 0;
+  opacity: 1;
+}
+
+.animate {
+  transition: all 0.4s ease-in-out;
+}
+
+.material-icons.md-15 {
+  font-size: 15px;
+}

@@ -1,0 +1,79 @@
+<div class="center">
+  <ngx-file-drop
+    dropZoneLabel="Drop files here"
+    (onFileDrop)="dropped($event)"
+    (onFileOver)="fileOver($event)"
+    (onFileLeave)="fileLeave($event)"
+  >
+    <ng-template
+      ngx-file-drop-content-tmp
+      let-openFileSelector="openFileSelector"
+    >
+      <!-- <mat-icon (click)="openFileSelector()">upload</mat-icon>
+      <button type="button" (click)="openFileSelector()"></button> -->
+      <div>
+        <div style="text-align: center">
+          <mat-icon (click)="openFileSelector()">upload</mat-icon>
+        </div>
+        <div style="display: none">
+          <button type="button" (click)="openFileSelector()"></button>
+        </div>
+        <span
+          class="file-upload__zone-label mat-body-2"
+          (click)="openFileSelector()"
+          >Drag & drop files to import or <b>browse</b></span
+        >
+      </div>
+    </ng-template>
+  </ngx-file-drop>
+  <div *ngIf="uploadSourceList.length > 0" class="upload-table mt-2">
+    <table class="table">
+      <!-- <thead>
+        <tr>
+          <th>Name</th>
+        </tr>
+      </thead> -->
+      <tbody class="upload-name-style">
+        <tr *ngFor="let item of uploadSourceList; let i = index">
+          <td>
+            <strong>{{ item.name }}</strong>
+          </td>
+          <td>
+            <div>
+              <img style="width: 30px; height: 30px" [src]="item.file" />
+            </div>
+          </td>
+          <td>
+            <div>
+              <button
+                class="btn btn-tbl-delete h-auto"
+                placement="top"
+                ngbTooltip="delete"
+                (click)="deletePhoto(item.key)"
+              >
+                <i class="far fa-trash-alt"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- <div class="center">
+  <ngx-file-drop
+    dropZoneLabel="Drop files here"
+    (onFileDrop)="dropped($event)"
+    (onFileOver)="fileOver($event)"
+    (onFileLeave)="fileLeave($event)"
+  >
+    <ng-template
+      ngx-file-drop-content-tmp
+      let-openFileSelector="openFileSelector"
+    >
+      Optional custom content that replaces the the entire default content.
+      <button type="button" (click)="openFileSelector()"></button>
+    </ng-template>
+  </ngx-file-drop>
+</div> -->

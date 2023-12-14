@@ -1,0 +1,28 @@
+.ng-invalid.ng-touched {
+  border-color: red;
+}
+
+.error-block {
+  color: red;
+}
+
+/*Loading the spinner*/
+
+.div-spinner-outer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  background-color: #fcfdfb;
+  opacity: 0.7;
+}
+
+.div-spinner-inner {
+  position: relative;
+  top: 40% !important;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/**********************/
