@@ -1,20 +1,30 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  Output,
+  OnInit,
+  EventEmitter,
+  AfterViewInit,
+} from '@angular/core';
 import {
   NgxFileDropEntry,
   FileSystemFileEntry,
   FileSystemDirectoryEntry,
 } from 'ngx-file-drop';
 import { FileUploadSource } from '../models/file-upload-source';
+import { ProjectUtilitySharingService } from 'src/app/services/project-utility-sharing.service';
 
 @Component({
   selector: 'app-file-upload-dragdrop',
   templateUrl: './file-upload-dragdrop.component.html',
   styleUrls: ['./file-upload-dragdrop.component.scss'],
 })
-export class FileUploadDragdropComponent {
+export class FileUploadDragdropComponent implements OnInit, AfterViewInit {
   public files: NgxFileDropEntry[] = [];
   uploadSourceList: FileUploadSource[] = [];
   imageUrlPREVIEW: any;
+  @Output() hasUploadPhotos = new EventEmitter<string>();
+
+  constructor(private prjUtlService: ProjectUtilitySharingService) {}
 
   public dropped(files: NgxFileDropEntry[]) {
     this.uploadSourceList = [];
@@ -93,6 +103,7 @@ export class FileUploadDragdropComponent {
     }
     console.log('<<<<<<<<<<<<<<<<<uploadSourceList>>>>>>>>>>>>>>>>>');
     console.log(this.uploadSourceList);
+    this.setPhotoSelectionStatus();
   }
 
   public fileOver(event: any) {
@@ -122,5 +133,24 @@ export class FileUploadDragdropComponent {
     } else {
       console.log('Not-Deleted!');
     }
+    this.setPhotoSelectionStatus();
+  }
+
+  ngOnInit(): void {
+    this.setPhotoSelectionStatus();
+  }
+
+  ngAfterViewInit(): void {
+    this.setPhotoSelectionStatus();
+  }
+
+  setPhotoSelectionStatus() {
+    setTimeout(() => {
+      if (this.uploadSourceList.length > 0) {
+        this.prjUtlService.setphotoUploadedValue(true);
+      } else {
+        this.prjUtlService.setphotoUploadedValue(false);
+      }
+    }, 100);
   }
 }

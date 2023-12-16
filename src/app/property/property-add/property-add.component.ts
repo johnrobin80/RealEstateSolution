@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -6,13 +6,16 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { ToastrService } from 'ngx-toastr';
+import { Observable, Subscription, share } from 'rxjs';
 import { CheckForNullValidation } from 'src/app/custom-functions/validations/check-value-isnull';
 import {
   ValidationDataList,
   ValidationDetails,
   ValidationHeaders,
 } from 'src/app/models/validation-lists';
+import { ProjectUtilitySharingService } from 'src/app/services/project-utility-sharing.service';
 
 import Swal from 'sweetalert2';
 
@@ -22,7 +25,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./property-add.component.scss'],
   providers: [ToastrService],
 })
-export class PropertyAddComponent implements OnInit {
+export class PropertyAddComponent implements OnInit, OnDestroy {
   @ViewChild('stepper') stepper: any;
   @ViewChild('content') content: any;
   @ViewChild('validationList') validationList: any;
@@ -31,6 +34,7 @@ export class PropertyAddComponent implements OnInit {
   address!: FormGroup;
   otherDetails!: FormGroup;
   photos!: FormGroup;
+  done!: FormGroup;
   businessMode: Array<string> = ['Rent', 'Sell'];
   homeCapacity: Array<number> = [1, 2, 3, 4, 5, 6];
   propertyTypes: Array<string> = ['Apartment', 'Duplex', 'House'];
@@ -47,11 +51,15 @@ export class PropertyAddComponent implements OnInit {
   validationHeaderAndDetail: Array<ValidationDataList> = [];
   validationDetailValues: Array<ValidationDetails> = [];
   validationHeaderValue!: ValidationHeaders;
+  checkPhoto!: Observable<boolean>;
+  photoUploadCheckSubscription!: Subscription;
+  hasPhotoUploaded!: boolean;
 
   constructor(
     private _formBuilder: FormBuilder,
     private toastrService: ToastrService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private prjUtlService: ProjectUtilitySharingService
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +67,36 @@ export class PropertyAddComponent implements OnInit {
     setTimeout(() => {
       this.stepper.selectedIndex = 0;
       this.isvalidationErrorList = true;
+      //this.photos.setErrors({ invalid: true });
+      //this.done.setErrors({ invalid: true });
+      this.checkPhoto = this.prjUtlService.isPhotoUploaded.pipe(share());
+      //this.photos.setErrors({ invalid: true });
+      this.photoUploadCheckSubscription = this.checkPhoto.subscribe(
+        (data: boolean) => {
+          this.hasPhotoUploaded = data;
+          this.tabValidation();
+        }
+      );
     }, 100);
+  }
+
+  tabValidation() {
+    if (this.hasPhotoUploaded === true) {
+      this.photoHiddenLabel.setValue(this.hasPhotoUploaded);
+    } else {
+      this.photoHiddenLabel.setValue('');
+    }
+    if (
+      this.basicInfo.valid &&
+      this.pricingAndArea.valid &&
+      this.address.valid &&
+      this.otherDetails.valid &&
+      this.photos.valid
+    ) {
+      this.doneHiddenLabel.setValue('done');
+    } else {
+      this.doneHiddenLabel.setValue('');
+    }
   }
 
   onCreatingTheControls() {
@@ -93,7 +130,10 @@ export class PropertyAddComponent implements OnInit {
       comment: ['', []],
     });
     this.photos = this._formBuilder.group({
-      secondCtrl: ['', Validators.required],
+      photoHiddenLabel: ['', [Validators.required]],
+    });
+    this.done = this._formBuilder.group({
+      doneHiddenLabel: ['', [Validators.required]],
     });
   }
 
@@ -164,6 +204,14 @@ export class PropertyAddComponent implements OnInit {
   }
   get comment() {
     return this.otherDetails.controls['comment'] as FormControl;
+  }
+
+  get photoHiddenLabel() {
+    return this.photos.controls['photoHiddenLabel'] as FormControl;
+  }
+
+  get doneHiddenLabel() {
+    return this.done.controls['doneHiddenLabel'] as FormControl;
   }
 
   onSubmit() {
@@ -268,6 +316,13 @@ export class PropertyAddComponent implements OnInit {
 
   public onStepChange(event: any): void {
     console.log(event.selectedIndex);
+    this.tabValidation();
+    if (event.selectedIndex == 4) {
+      console.log('this.photos.invalid ==> ' + this.photos.invalid);
+      console.log(this.photos.valid);
+      console.log(this.photos);
+    }
+
     if (event.selectedIndex == 5) {
       this.validationHeaderAndDetail = [];
       this.isvalidationErrorList = false;
@@ -315,5 +370,9 @@ export class PropertyAddComponent implements OnInit {
       this.isvalidationErrorList = true;
     }
     console.log(this.isvalidationErrorList);
+  }
+
+  ngOnDestroy(): void {
+    this.photoUploadCheckSubscription.unsubscribe();
   }
 }
