@@ -8,7 +8,7 @@ import { DirectionService } from './service/direction.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './interceptor/jwt.interceptor';
 import { ErrorInterceptor } from './interceptor/error.interceptor';
-import { FakeBackendInterceptor } from './interceptor/fake-backend';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [],
@@ -20,7 +20,7 @@ import { FakeBackendInterceptor } from './interceptor/fake-backend';
     DirectionService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    FakeBackendInterceptor,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
 })
 export class CoreModule {

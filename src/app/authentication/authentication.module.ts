@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ToastrModule } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { SigninComponent } from './signin/signin.component';
@@ -33,13 +34,21 @@ const icons = {
 };
 
 @NgModule({
-  declarations: [SigninComponent, SignupComponent, ForgotComponent, Page500Component, Page404Component, ResetComponent],
+  declarations: [
+    SigninComponent,
+    SignupComponent,
+    ForgotComponent,
+    Page500Component,
+    Page404Component,
+    ResetComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     AuthenticationRoutingModule,
     FeatherModule.pick(icons),
+    ToastrModule.forRoot(),
   ],
 })
 export class AuthenticationModule {}
