@@ -5,8 +5,4 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './forgot.component.html',
   styleUrls: ['./forgot.component.sass'],
 })
-export class ForgotComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
+export class ForgotComponent {}

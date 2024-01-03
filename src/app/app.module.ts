@@ -18,11 +18,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
-import {
-  HttpClientModule,
-  HTTP_INTERCEPTORS,
-  HttpClient,
-} from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AutosizeModule } from 'ngx-autosize';
 import { ProjectUtilitySharingService } from './services/project-utility-sharing.service';
@@ -64,8 +60,8 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
-
     ProjectUtilitySharingService,
+    CoreModule,
   ],
   bootstrap: [AppComponent],
 })

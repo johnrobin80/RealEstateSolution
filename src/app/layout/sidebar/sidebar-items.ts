@@ -45,7 +45,7 @@ export const ROUTES: RouteInfo[] = [
     badgeClass: '',
     submenu: [
       {
-        path: '/authentication/signin',
+        path: '/user/signup',
         title: 'MENUITEMS.USERDATA.LIST.REGISTER-USER',
         iconType: '',
         icon: '',
@@ -56,7 +56,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
-        path: '/authentication/signin',
+        path: '/user/forgot',
         title: 'MENUITEMS.USERDATA.LIST.CHANGE-PASSWORD',
         iconType: '',
         icon: '',

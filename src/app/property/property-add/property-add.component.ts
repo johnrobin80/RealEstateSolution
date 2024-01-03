@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Subscription, share } from 'rxjs';
+import { CanComponentDeactivate } from 'src/app/core/guard/auth-candeactivate-guard';
 import { CheckForNullValidation } from 'src/app/custom-functions/validations/check-value-isnull';
 import {
   ValidationDataList,
@@ -25,7 +26,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./property-add.component.scss'],
   providers: [ToastrService],
 })
-export class PropertyAddComponent implements OnInit, OnDestroy {
+export class PropertyAddComponent
+  implements OnInit, OnDestroy, CanComponentDeactivate
+{
   @ViewChild('stepper') stepper: any;
   @ViewChild('content') content: any;
   @ViewChild('validationList') validationList: any;
@@ -54,6 +57,7 @@ export class PropertyAddComponent implements OnInit, OnDestroy {
   checkPhoto!: Observable<boolean>;
   photoUploadCheckSubscription!: Subscription;
   hasPhotoUploaded!: boolean;
+  saveChanges = false;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -229,6 +233,7 @@ export class PropertyAddComponent implements OnInit, OnDestroy {
       allowOutsideClick: false,
     }).then((result) => {
       if (result.value) {
+        this.saveChanges = true;
         this.userSubmitted = false;
         this.modalService.open(this.content, {
           centered: true,
@@ -374,5 +379,13 @@ export class PropertyAddComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.photoUploadCheckSubscription.unsubscribe();
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.saveChanges === false) {
+      return confirm('Do you want to move away from the page?');
+    } else {
+      return true;
+    }
   }
 }

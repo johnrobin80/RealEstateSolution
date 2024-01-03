@@ -20,7 +20,7 @@ import { NgModule } from '@angular/core';
 import { PropertyValidationListingComponent } from './property-validation-listing/property-validation-listing.component';
 import { LoadingSpinnerModule } from '../shared/loading-spinner/loading-spinner.module';
 import { SharedModule } from '../shared/shared.module';
-
+import { CanDeactivateGuard } from '../core/guard/auth-candeactivate-guard';
 @NgModule({
   declarations: [
     PropertyAddComponent,
@@ -28,7 +28,7 @@ import { SharedModule } from '../shared/shared.module';
     PropertyCardComponent,
     PropertyValidationListingComponent,
   ],
-  providers: [],
+  providers: [CanDeactivateGuard],
   imports: [
     CommonModule,
     PropertyRoutingModule,

@@ -77,8 +77,8 @@ export class SigninComponent implements OnInit {
       this.error = 'Username and Password not valid !';
       return;
     } else {
-      this.authService.login(this.loginForm.value).subscribe(
-        (res: any) => {
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (res: any) => {
           //alert('SigninComponent1 ==> ' + JSON.stringify(res));
           const jsonValues: ILoginResponse = JSON.parse(JSON.stringify(res));
           // alert(
@@ -111,15 +111,15 @@ export class SigninComponent implements OnInit {
             });
           }
         },
-        (error: any) => {
+        error: (err: any) => {
           //alert('ERROR ==> ');
-          this.error = error;
+          this.error = err;
           this.submitted = false;
-          this.toastrService.error(error, '', {
+          this.toastrService.error(err, '', {
             progressBar: true,
           });
-        }
-      );
+        },
+      });
     }
   }
 }

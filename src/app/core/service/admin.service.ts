@@ -1,14 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map } from 'rxjs';
 import { Country } from '../models/country';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
-  constructor(private http: HttpClient) {}
+  loadedPageName!: BehaviorSubject<string>;
+  testSubject!: Subject<string>;
+  //testSubject = new Subject<string>();
+  constructor(private http: HttpClient) {
+    this.loadedPageName = new BehaviorSubject<string>('AdminService');
+    this.testSubject = new Subject();
+  }
 
+  /*---------------------------------------COUNTRY------------------------------------------*/
   getAllCountries(): Observable<Country[]> | any {
     const countries: Array<Country> = [];
     return this.http.get('assets/data/countries.json').pipe(
