@@ -122,7 +122,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   sidebbarClose() {
     if (window.innerWidth < 1025) {
-      alert('sidebbarClose');
       this.renderer.addClass(this.document.body, 'sidebar-gone');
     }
   }

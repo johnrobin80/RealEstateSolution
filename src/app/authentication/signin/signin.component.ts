@@ -97,6 +97,7 @@ export class SigninComponent implements OnInit {
               this.router.navigate(['/dashboard/main']);
               this.toastrService.success('Loggedin successfully', '', {
                 progressBar: true,
+                positionClass: 'toast-top-right',
               });
             } else {
               this.error = 'Invalid Login';

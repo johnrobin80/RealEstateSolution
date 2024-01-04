@@ -94,9 +94,9 @@ export class CountryListComponent implements OnInit {
   deleteSingleRow(row: any) {
     console.log(row);
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert this!",
-      icon: 'warning',
+      title: 'Delete?',
+      text: 'Do you want to delete the selected row!',
+      icon: 'error',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -108,12 +108,12 @@ export class CountryListComponent implements OnInit {
         // Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
         Swal.fire({
           title: 'Deleted!',
-          text: 'Your file has been deleted.',
+          text: 'The selected row data has been deleted.',
           icon: 'success',
           allowOutsideClick: false,
         });
         this.toastrService.success(
-          'Country ' + row.name + ' deleted successfully',
+          'Country ' + row.country + ' deleted successfully',
           '',
           {
             progressBar: true,

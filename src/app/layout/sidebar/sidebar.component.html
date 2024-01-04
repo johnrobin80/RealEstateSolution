@@ -6,17 +6,17 @@
     (mouseenter)="mouseHover()"
     (mouseleave)="mouseOut()"
   >
-    <div class="sidebar-brand">
+    <div class="sidebar-brand mb-5">
       <a routerLink="/dashboard/main">
         <img alt="image" src="assets/images/logo.png" class="header-logo" />
-        <span class="logo-name">RealtySol</span>
+        <span class="logo-name"></span>
       </a>
     </div>
     <!-- Menu -->
     <div class="menu">
       <ng-scrollbar [style.height]="listMaxHeight + 'px'" visibility="hover">
         <ul class="list">
-          <li class="sidebar-user-panel">
+          <!-- <li class="sidebar-user-panel">
             <div class="user-panel">
               <div class="image">
                 <img
@@ -32,7 +32,7 @@
                 {{ "MENUITEMS.USER.POST" | translate }}
               </div>
             </div>
-          </li>
+          </li> -->
           <!-- Top Most level menu -->
           <li
             *ngFor="let sidebarItem of sidebarItems"
