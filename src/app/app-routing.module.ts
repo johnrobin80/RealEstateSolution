@@ -11,7 +11,7 @@ const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', redirectTo: '/authentication/signin', pathMatch: 'full' },
+      { path: '', redirectTo: '/user/signin', pathMatch: 'full' },
       {
         path: 'user',
         loadChildren: () =>
@@ -37,13 +37,26 @@ const routes: Routes = [
     ],
   },
 
+  // {
+  //   path: 'authentication',
+  //   component: AuthLayoutComponent,
+  //   loadChildren: () =>
+  //     import('./authentication/authentication.module').then(
+  //       (m) => m.AuthenticationModule
+  //     ),
+  // },
   {
-    path: 'authentication',
+    path: '',
     component: AuthLayoutComponent,
-    loadChildren: () =>
-      import('./authentication/authentication.module').then(
-        (m) => m.AuthenticationModule
-      ),
+    children: [
+      {
+        path: 'authentication',
+        loadChildren: () =>
+          import('./authentication/authentication.module').then(
+            (m) => m.AuthenticationModule
+          ),
+      },
+    ],
   },
 ];
 @NgModule({
