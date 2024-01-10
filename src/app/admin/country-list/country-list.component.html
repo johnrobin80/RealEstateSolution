@@ -84,7 +84,7 @@
               [selected]="selected"
               [selectionType]="SelectionType.single"
             >
-              <!-- <ngx-datatable-column [width]="30" name="Id">
+              <ngx-datatable-column [width]="30" name="Id" *ngIf="false">
                 <ng-template
                   let-row="row"
                   let-value="value"
@@ -95,7 +95,7 @@
                     <div>{{ row.id }}</div>
                   </div>
                 </ng-template>
-              </ngx-datatable-column> -->
+              </ngx-datatable-column>
 
               <ngx-datatable-column name="Country">
                 <ng-template let-row="row" ngx-datatable-cell-template>
@@ -143,7 +143,7 @@
                   <span>
                     <button
                       class="btn btn-tbl-edit h-auto"
-                      (click)="editRow(row, rowIndex)"
+                      (click)="editRow(addRecord, row.id, rowIndex)"
                       placement="top"
                       ngbTooltip="edit"
                     >
@@ -151,7 +151,7 @@
                     </button>
                     <button
                       class="btn btn-tbl-delete h-auto"
-                      (click)="deleteSingleRow(row)"
+                      (click)="deleteSingleRow(row.id)"
                       placement="top"
                       ngbTooltip="delete"
                     >
@@ -175,7 +175,7 @@
                   <div class="table-modal-header">
                     <div>
                       <div class="fw-bold p-t-9 font-17">
-                        <u>Add Country</u>
+                        <u>{{ modelLabelName }} Country</u>
                       </div>
                     </div>
                   </div>
@@ -217,7 +217,6 @@
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="Country"
                         formControlName="country"
                         name="country"
                       />
@@ -227,6 +226,17 @@
                       >
                         Country is required</small
                       >
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-3">
+                      <label>Country Code </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="countryCode"
+                        name="countryCode"
+                      />
                     </div>
                   </div>
                   <div class="row">

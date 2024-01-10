@@ -1,4 +1,4 @@
-import { Component, OnInit, Signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Country } from 'src/app/core/models/country';
 import { AdminService } from 'src/app/core/service/admin.service';
 import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { PageMode } from 'src/app/enums/enums-handler';
 
 @Component({
   selector: 'app-country-list',
@@ -21,6 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CountryListComponent implements OnInit {
   countries: Array<Country> = [];
+  countryValues!: Country | any;
   scrollBarHorizontal = window.innerWidth < 1000;
   reorderable = true;
   loadingIndicator = true;
@@ -29,6 +31,7 @@ export class CountryListComponent implements OnInit {
   ColumnMode = ColumnMode;
   SelectionType = SelectionType;
   register!: UntypedFormGroup;
+  modelLabelName!: string;
 
   page = 1; /*The current page.*/
   pageSize = 5; /*Number of elements/items per page.*/
@@ -56,12 +59,16 @@ export class CountryListComponent implements OnInit {
   loadControls() {
     this.register = this.fb.group({
       country: [null, [Validators.required]],
+      countryCode: [null, []],
       active: [null, []],
     });
   }
 
   get Country() {
     return this.register.controls['country'] as UntypedFormControl;
+  }
+  get CountryCode() {
+    return this.register.controls['countryCode'] as UntypedFormControl;
   }
   get Active() {
     return this.register.controls['active'] as UntypedFormControl;
@@ -74,22 +81,27 @@ export class CountryListComponent implements OnInit {
         console.log('---------Country List----------');
         console.log(this.countries);
         this.loadingIndicator = false;
+        this.modelLabelName = 'Add';
       }, 300);
     });
   }
 
-  onAlert(id: any) {
-    const dd = this.activatedRoute.snapshot.url.toString();
-    alert(dd + ' => ' + id);
-    this.router.isActive;
-  }
-
-  editRow(row: any, rowIndex: number) {
-    alert(rowIndex);
-    console.log(row);
-    this.toastrService.success('Edit record successfully', '', {
-      progressBar: true,
-    });
+  editRow(content: any, dataRowId: any, tableRowIndex: number) {
+    const ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'sm',
+      keyboard: false,
+    };
+    console.log(dataRowId);
+    this.modelLabelName = 'Update';
+    this.countryValues = this.countries.find((x) => x.id === dataRowId);
+    this.Country.setValue(this.countryValues.country);
+    this.CountryCode.setValue(this.countryValues.countryCode);
+    this.modalService.open(content, ngbModalOptions);
+    // this.toastrService.success('Edit record successfully', '', {
+    //   progressBar: true,
+    // });
   }
   deleteSingleRow(row: any) {
     console.log(row);
@@ -158,8 +170,15 @@ export class CountryListComponent implements OnInit {
       keyboard: false,
     };
     console.log(ngbModalOptions);
-
+    this.modelLabelName = 'Add';
     this.modalService.open(content, ngbModalOptions);
+    // if(loadType === PageMode.add.toString())
+    // {
+    //   console.log(loadType);
+    // }
+    // else if (loadType === PageMode.edit.toString()) {
+    //   console.log(loadType);
+    // }
   }
 
   addCountry() {

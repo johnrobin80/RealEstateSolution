@@ -383,9 +383,41 @@ export class PropertyAddComponent
 
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
     if (this.saveChanges === false) {
+      //const confirmValue = confirm('Do you want to move away from the page?');
       return confirm('Do you want to move away from the page?');
+      //console.log('1 Deactivate confirmation: ' + confirmValue);
+      //return confirmValue;
     } else {
       return true;
     }
+
+    // if (this.saveChanges === false) {
+    //const confirmStatus = confirm('Do you want to move away from the page?');
+    //console.log('1 PROPERTY REGISTRATION : ' + confirmStatus);
+
+    //     Swal.fire({
+    //       title: 'Do you want to move away from the page?',
+    //       text: 'Moving from the page will loose all your data.',
+    //       icon: 'warning',
+    //       showCancelButton: true,
+    //       confirmButtonColor: '#3085d6',
+    //       cancelButtonColor: '#d33',
+    //       confirmButtonText: 'Proceed',
+    //       allowOutsideClick: false,
+    //     }).then((result) => {
+    //       if (result.isConfirmed) {
+    //         console.log('1 Reset - ' + result.value);
+    //         return true;
+    //       } else {
+    //         console.log('2 No reset - false');
+    //         return false;
+    //       }
+    //     });
+    //     //window.scrollTo(0, 0);
+    //     return true;
+    //   } else {
+    //     console.log('2 PROPERTY REGISTRATION : TRUE');
+    //     return true;
+    //   }
   }
 }
