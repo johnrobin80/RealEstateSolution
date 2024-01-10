@@ -86,6 +86,25 @@ export class CountryListComponent implements OnInit {
     });
   }
 
+  addRow(content: any) {
+    const ngbModalOptions: NgbModalOptions = {
+      backdrop: 'static',
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'sm',
+      keyboard: false,
+    };
+    console.log(ngbModalOptions);
+    this.modelLabelName = 'Add';
+    this.modalService.open(content, ngbModalOptions);
+    // if(loadType === PageMode.add.toString())
+    // {
+    //   console.log(loadType);
+    // }
+    // else if (loadType === PageMode.edit.toString()) {
+    //   console.log(loadType);
+    // }
+  }
+
   editRow(content: any, dataRowId: any, tableRowIndex: number) {
     const ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
@@ -103,6 +122,7 @@ export class CountryListComponent implements OnInit {
     //   progressBar: true,
     // });
   }
+
   deleteSingleRow(row: any) {
     console.log(row);
     Swal.fire({
@@ -135,50 +155,6 @@ export class CountryListComponent implements OnInit {
         console.log('Not-Deleted - ' + result.value);
       }
     });
-  }
-
-  // add new record
-  // addRow(content: any) {
-  //   this.modalService.open(content, {
-  //     ariaLabelledBy: 'modal-basic-title',
-  //     size: 'sm',
-  //   });
-  // }
-
-  // addRow(content: any) {
-  //   const ngbModalOptions: NgbModalOptions = {
-  //     backdrop: 'static',
-  //     keyboard: false,
-
-  //   };
-  //   console.log(ngbModalOptions);
-
-  //   this.modalService.open(
-  //     content,
-  //     {
-  //       ariaLabelledBy: 'modal-basic-title',
-  //       size: 'sm',
-  //     },
-  //   );
-  // }
-
-  addRow(content: any) {
-    const ngbModalOptions: NgbModalOptions = {
-      backdrop: 'static',
-      ariaLabelledBy: 'modal-basic-title',
-      size: 'sm',
-      keyboard: false,
-    };
-    console.log(ngbModalOptions);
-    this.modelLabelName = 'Add';
-    this.modalService.open(content, ngbModalOptions);
-    // if(loadType === PageMode.add.toString())
-    // {
-    //   console.log(loadType);
-    // }
-    // else if (loadType === PageMode.edit.toString()) {
-    //   console.log(loadType);
-    // }
   }
 
   addCountry() {
