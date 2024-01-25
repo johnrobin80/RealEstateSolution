@@ -21,6 +21,7 @@ import { ForgotComponent } from './forgot/forgot.component';
 import { Page500Component } from './page500/page500.component';
 import { Page404Component } from './page404/page404.component';
 import { ResetComponent } from './reset/reset.component';
+import { AuthService } from '../authentication/auth.service';
 
 const icons = {
   Facebook,
@@ -50,5 +51,6 @@ const icons = {
     FeatherModule.pick(icons),
     ToastrModule.forRoot(),
   ],
+  providers: [AuthService],
 })
 export class AuthenticationModule {}

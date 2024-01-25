@@ -15,7 +15,7 @@ import {
   finalize,
 } from 'rxjs/operators';
 import { ErrorCodes } from 'src/app/enums/enums-handler';
-import { AuthService } from '../service/auth.service';
+import { AuthService } from '../../authentication/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

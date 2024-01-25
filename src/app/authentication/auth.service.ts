@@ -7,7 +7,7 @@ import {
   ILoginResponse,
   ITokenData,
   User,
-} from '../models/user';
+} from '../core/models/user';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { ToastrModule } from 'ngx-toastr';
+import { AdminService } from '../admin/admin.service';
 
 @NgModule({
   declarations: [CityComponent, CountryListComponent],
@@ -25,5 +26,6 @@ import { ToastrModule } from 'ngx-toastr';
     NgbModule,
     ToastrModule.forRoot(),
   ],
+  providers: [AdminService],
 })
 export class AdminModule {}

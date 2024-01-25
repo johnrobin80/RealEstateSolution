@@ -10,7 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { ROUTES } from './sidebar-items';
-import { AuthService } from 'src/app/core/service/auth.service';
+import { AuthService } from 'src/app/authentication/auth.service';
 import { RouteInfo } from './sidebar.metadata';
 @Component({
   selector: 'app-sidebar',

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AdminService } from 'src/app/core/service/admin.service';
+import { AdminService } from 'src/app/admin/admin.service';
 
 @Component({
   selector: 'app-city',

@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Country } from 'src/app/core/models/country';
-import { AdminService } from 'src/app/core/service/admin.service';
+import {
+  AddCountry,
+  Countries,
+  IResponseData,
+  UpdateCountry,
+} from 'src/app/core/models/country';
+import { AdminService } from 'src/app/admin/admin.service';
 import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -12,7 +17,6 @@ import {
 } from '@angular/forms';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { PageMode } from 'src/app/enums/enums-handler';
 
 @Component({
   selector: 'app-country-list',
@@ -21,8 +25,10 @@ import { PageMode } from 'src/app/enums/enums-handler';
   providers: [ToastrService],
 })
 export class CountryListComponent implements OnInit {
-  countries: Array<Country> = [];
-  countryValues!: Country | any;
+  countries: Array<Countries> = [];
+  countryValues!: Countries;
+  addCountryValues!: AddCountry;
+  updateCountryValues!: UpdateCountry;
   scrollBarHorizontal = window.innerWidth < 1000;
   reorderable = true;
   loadingIndicator = true;
@@ -32,9 +38,10 @@ export class CountryListComponent implements OnInit {
   SelectionType = SelectionType;
   register!: UntypedFormGroup;
   modelLabelName!: string;
+  countryIdSelected = 0;
 
   page = 1; /*The current page.*/
-  pageSize = 5; /*Number of elements/items per page.*/
+  pageSize = 10; /*Number of elements/items per page.*/
   collectionSize = 15; /*Number of elements/items in the collection. i.e. the total number of items the pagination should handle.*/
   constructor(
     private adminService: AdminService,
@@ -51,7 +58,7 @@ export class CountryListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadControls();
-    this.loadData();
+    this.loadCountries();
     //alert('Data loaded successfully!!');
     console.log(this.register);
   }
@@ -74,15 +81,23 @@ export class CountryListComponent implements OnInit {
     return this.register.controls['active'] as UntypedFormControl;
   }
 
-  loadData() {
-    this.adminService.getAllCountries().subscribe((data: Country[]) => {
-      setTimeout(() => {
-        this.countries = data;
-        console.log('---------Country List----------');
-        console.log(this.countries);
-        this.loadingIndicator = false;
-        this.modelLabelName = 'Add';
-      }, 300);
+  loadCountries() {
+    // this.adminService.getAllCountries().subscribe((data: Country[]) => {
+    //   setTimeout(() => {
+    //     this.countries = data;
+    //     console.log('---------Country List----------');
+    //     console.log(this.countries);
+    //     this.loadingIndicator = false;
+    //     this.modelLabelName = 'Add';
+    //   }, 300);
+    // });
+
+    this.adminService.getCountries('0').subscribe((data: IResponseData) => {
+      this.countries = data.data;
+      console.log('---------Country List----------');
+      console.log(this.countries);
+      this.loadingIndicator = false;
+      this.modelLabelName = 'Add';
     });
   }
 
@@ -92,6 +107,7 @@ export class CountryListComponent implements OnInit {
       ariaLabelledBy: 'modal-basic-title',
       size: 'sm',
       keyboard: false,
+      centered: true,
     };
     console.log(ngbModalOptions);
     this.modelLabelName = 'Add';
@@ -105,68 +121,144 @@ export class CountryListComponent implements OnInit {
     // }
   }
 
-  editRow(content: any, dataRowId: any, tableRowIndex: number) {
+  viewRow(content: any, dataRowId: number, tableRowIndex: number) {
     const ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       ariaLabelledBy: 'modal-basic-title',
       size: 'sm',
       keyboard: false,
+      centered: true,
     };
-    console.log(dataRowId);
+    this.countryIdSelected = dataRowId;
     this.modelLabelName = 'Update';
-    this.countryValues = this.countries.find((x) => x.id === dataRowId);
-    this.Country.setValue(this.countryValues.country);
-    this.CountryCode.setValue(this.countryValues.countryCode);
+    // this.countryValues = this.countries.find((x) => x.id === dataRowId);
+    this.adminService
+      .getCountrySelected(dataRowId.toString())
+      .subscribe((data: IResponseData) => {
+        //this.countryValues = data.data[0];
+        console.log(data.success);
+        this.Country.setValue(data.data[0].countryname);
+        this.CountryCode.setValue(data.data[0].countrycode);
+        this.Active.setValue(
+          data.data[0].statusname === 'Active' ? true : false
+        );
+      });
     this.modalService.open(content, ngbModalOptions);
+
+    // this.countries.forEach((x) => {
+    //   x.countryid === dataRowId
+    //     ? (x.countryname = x.countryname + ' - Rob')
+    //     : '';
+    // });
+
     // this.toastrService.success('Edit record successfully', '', {
     //   progressBar: true,
     // });
   }
 
-  deleteSingleRow(row: any) {
-    console.log(row);
-    Swal.fire({
-      title: 'Delete?',
-      text: 'Do you want to delete the selected row!',
-      icon: 'error',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
-      allowOutsideClick: false,
-    }).then((result) => {
-      if (result.value) {
-        console.log('Deleted - ' + result.value);
-        // Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
-        Swal.fire({
-          title: 'Deleted!',
-          text: 'The selected row data has been deleted.',
-          icon: 'success',
-          allowOutsideClick: false,
-        });
-        this.toastrService.success(
-          'Country ' + row.country + ' deleted successfully',
-          '',
-          {
-            progressBar: true,
-          }
-        );
-      } else {
-        console.log('Not-Deleted - ' + result.value);
-      }
-    });
+  deleteCountry(countryId: number, countryName: string) {
+    console.log(countryId);
+    if (countryId !== 0) {
+      Swal.fire({
+        title: 'Delete?',
+        text:
+          'Do you want to delete the country ' + '"' + countryName + '"' + '!',
+        icon: 'error',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.value) {
+          // Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+          this.adminService
+            .deleteCountry(countryId)
+            .subscribe((data: IResponseData) => {
+              console.log('DELETE => ' + data.message);
+              if (data.success === true && data.statusCode === 200) {
+                this.loadCountries();
+                Swal.fire({
+                  title: 'Deleted!',
+                  text:
+                    'The country ' +
+                    '"' +
+                    countryName +
+                    '"' +
+                    ' has been deleted.',
+                  icon: 'success',
+                  allowOutsideClick: false,
+                });
+                this.toastrService.success(
+                  'Country ' +
+                    '"' +
+                    countryName +
+                    '"' +
+                    ' has been deleted successfully',
+                  '',
+                  {
+                    progressBar: true,
+                  }
+                );
+              } else {
+                this.toastrService.error(data.message, '', {
+                  progressBar: true,
+                });
+              }
+            });
+        } else {
+          console.log('Not-Deleted - ');
+        }
+      });
+    }
   }
 
-  addCountry() {
-    this.toastrService.success('Added record successfully', '', {
-      progressBar: true,
-    });
-    this.resetControls();
-    this.modalService.dismissAll();
+  submitCountry(submitMode: string) {
+    if (submitMode === 'Add') {
+      //alert('add');
+      this.addCountryValues = {
+        countryname: this.Country.value,
+        countrycode: this.CountryCode.value,
+        isactive: this.Active.value,
+      };
+      this.adminService
+        .addCountry(this.addCountryValues)
+        .subscribe((data: IResponseData) => {
+          if (data.success === true && data.statusCode === 200) {
+            this.toastrService.success('Created successfully', '', {
+              progressBar: true,
+            });
+            this.resetControls();
+            this.loadCountries();
+          }
+        });
+    } else if (submitMode === 'Update') {
+      if (this.countryIdSelected !== 0) {
+        //alert('update ==> ' + this.countryIdSelected);
+        this.updateCountryValues = {
+          countryid: this.countryIdSelected,
+          countryname: this.Country.value,
+          countrycode: this.CountryCode.value,
+          isactive: this.Active.value,
+        };
+        this.adminService
+          .updateCountry(this.updateCountryValues)
+          .subscribe((data: IResponseData) => {
+            if (data.success === true && data.statusCode === 200) {
+              this.toastrService.success('Updated successfully', '', {
+                progressBar: true,
+              });
+              this.resetControls();
+              this.loadCountries();
+            }
+          });
+      }
+    }
   }
 
   resetControls() {
     this.register.reset();
+    this.modalService.dismissAll();
   }
 
   closeModalForm() {

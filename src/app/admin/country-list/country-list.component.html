@@ -24,10 +24,10 @@
   <div class="section-body">
     <div class="row clearfix">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div class="card col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="card col-lg-8 col-md-8 col-sm-8 col-xs-8">
           <div class="p-10">
             <div class="row">
-              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+              <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                 <div class="row m-0">
                   <!-- <div class="col-auto p-0">
                     <div class="ngxTableHeader">
@@ -78,54 +78,57 @@
               [headerHeight]="60"
               [footerHeight]="80"
               rowHeight="auto"
-              [limit]="3"
+              [limit]="pageSize"
               [scrollbarH]="scrollBarHorizontal"
               [reorderable]="reorderable"
               [selected]="selected"
               [selectionType]="SelectionType.single"
             >
-              <ngx-datatable-column [width]="30" name="Id" *ngIf="false">
+              <ngx-datatable-column
+                [width]="180"
+                prop="countryname"
+                name="Country"
+              >
                 <ng-template
                   let-row="row"
-                  let-value="value"
-                  let-i="index"
                   ngx-datatable-cell-template
+                  let-value="value"
                 >
-                  <div class="name-col-style">
-                    <div>{{ row.id }}</div>
-                  </div>
+                  {{ value }}
                 </ng-template>
               </ngx-datatable-column>
-
-              <ngx-datatable-column name="Country">
-                <ng-template let-row="row" ngx-datatable-cell-template>
-                  {{ row.country }}
+              <ngx-datatable-column prop="createdon" name="CreatedOn">
+                <ng-template
+                  let-row="row"
+                  ngx-datatable-cell-template
+                  let-value="value"
+                >
+                  {{ value }}
                 </ng-template>
               </ngx-datatable-column>
-              <ngx-datatable-column name="CreatedOn">
-                <ng-template let-row="row" ngx-datatable-cell-template>
-                  {{ row.createdon }}
-                </ng-template>
-              </ngx-datatable-column>
-              <ngx-datatable-column name="Status">
-                <ng-template let-row="row" ngx-datatable-cell-template>
+              <ngx-datatable-column prop="statusname" name="Status">
+                <ng-template
+                  let-row="row"
+                  ngx-datatable-cell-template
+                  let-value="value"
+                >
                   <div
-                    *ngIf="row.status === 'Active'"
+                    *ngIf="value === 'Active'"
                     class="badge-outline col-green"
                   >
-                    {{ row.status }}
+                    {{ value }}
                   </div>
                   <div
-                    *ngIf="row.status === 'Completed'"
+                    *ngIf="value === 'Completed'"
                     class="badge-outline col-red"
                   >
-                    {{ row.status }}
+                    {{ value }}
                   </div>
                   <div
-                    *ngIf="row.status === 'Pending'"
+                    *ngIf="value === 'Pending'"
                     class="badge-outline col-indigo"
                   >
-                    {{ row.status }}
+                    {{ value }}
                   </div>
                 </ng-template>
               </ngx-datatable-column>
@@ -135,23 +138,22 @@
                 [sortable]="false"
               >
                 <ng-template
-                  let-value="value"
                   let-row="row"
                   let-rowIndex="rowIndex"
                   ngx-datatable-cell-template
                 >
                   <span>
                     <button
-                      class="btn btn-tbl-edit h-auto"
-                      (click)="editRow(addRecord, row.id, rowIndex)"
+                      class="btn btn-tbl-view h-auto"
+                      (click)="viewRow(addRecord, row.countryid, rowIndex)"
                       placement="top"
-                      ngbTooltip="edit"
+                      ngbTooltip="view"
                     >
                       <i class="fas fa-pen"></i>
                     </button>
                     <button
                       class="btn btn-tbl-delete h-auto"
-                      (click)="deleteSingleRow(row.id)"
+                      (click)="deleteCountry(row.countryid, row.countryname)"
                       placement="top"
                       ngbTooltip="delete"
                     >
@@ -203,14 +205,6 @@
               </div>
               <div class="modal-body">
                 <form class="register-form" [formGroup]="register">
-                  <div class="input-field col s12 d-none">
-                    <input
-                      formControlName="id"
-                      class="form-control"
-                      type="hidden"
-                    />
-                  </div>
-
                   <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
                       <label>Country <span class="text-danger">*</span></label>
@@ -256,7 +250,7 @@
                     <button
                       type="submit"
                       class="btn btn-primary"
-                      (click)="addCountry()"
+                      (click)="submitCountry(modelLabelName)"
                       [disabled]="!Country.valid"
                     >
                       Submit

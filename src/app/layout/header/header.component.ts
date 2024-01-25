@@ -1,5 +1,5 @@
 import { RightSidebarService } from 'src/app/core/service/rightsidebar.service';
-import { AuthService } from 'src/app/core/service/auth.service';
+import { AuthService } from 'src/app/authentication/auth.service';
 import { DOCUMENT } from '@angular/common';
 import {
   Component,
