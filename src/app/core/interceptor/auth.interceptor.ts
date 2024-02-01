@@ -14,7 +14,7 @@ import {
   retryWhen,
   finalize,
 } from 'rxjs/operators';
-import { ErrorCodes } from 'src/app/enums/enums-handler';
+import { ErrorCodes } from 'src/app/core/enums/enums-handler';
 import { AuthService } from '../../authentication/auth.service';
 
 @Injectable()

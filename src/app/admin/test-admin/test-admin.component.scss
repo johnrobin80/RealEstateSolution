@@ -1,0 +1,16 @@
+p {
+  font-family: Lato;
+}
+
+.ngx-datatable {
+  display: block;
+  overflow: hidden;
+  justify-content: center;
+  position: relative;
+  transform: translate3d(0, 0, 0);
+}
+
+.ngx-datatable .datatable-body .datatable-body-row > div {
+  align-items: center;
+  font-weight: bold;
+}

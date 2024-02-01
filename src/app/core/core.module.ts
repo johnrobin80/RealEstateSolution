@@ -10,10 +10,11 @@ import { JwtInterceptor } from './interceptor/jwt.interceptor';
 import { ErrorInterceptor } from './interceptor/error.interceptor';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { CanDeactivateGuard } from './guard/auth-candeactivate-guard';
-
+// import { FilterDataPipe } from '../pipes/filterdata.pipe';
 @NgModule({
   declarations: [],
   imports: [CommonModule],
+  exports: [],
   providers: [
     RightSidebarService,
     AuthGuard,

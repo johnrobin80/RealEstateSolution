@@ -15,12 +15,12 @@ export interface IResponseData {
 }
 
 export interface Countries {
-  countryid: number | null;
-  countryname: string | null;
-  countrycode: string | null;
-  createdon: string | null;
-  statusname: string | null;
-  isactive: boolean | false;
+  countryid?: number | null;
+  countryname?: string | null;
+  countrycode?: string | null;
+  createdon?: string | null;
+  statusname?: string | null;
+  isactive?: boolean | false;
 }
 
 export interface AddCountry {

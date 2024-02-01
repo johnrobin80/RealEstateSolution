@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   AddCountry,
   Countries,
@@ -6,7 +6,12 @@ import {
   UpdateCountry,
 } from 'src/app/core/models/country';
 import { AdminService } from 'src/app/admin/admin.service';
-import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
+import {
+  ColumnMode,
+  DatatableComponent,
+  Keys,
+  SelectionType,
+} from '@swimlane/ngx-datatable';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import {
@@ -17,6 +22,7 @@ import {
 } from '@angular/forms';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { debounceTime, fromEvent, map } from 'rxjs';
 
 @Component({
   selector: 'app-country-list',
@@ -25,6 +31,12 @@ import { ToastrService } from 'ngx-toastr';
   providers: [ToastrService],
 })
 export class CountryListComponent implements OnInit {
+  @ViewChild('search', { static: false }) search: any;
+  //@ViewChild(DatatableComponent) table!: DatatableComponent;
+  @ViewChild('table', { static: false }) table!: DatatableComponent;
+  //@ViewChild(DatatableComponent, { static: false }) table!: DatatableComponent;
+  temp: Array<Countries> = [];
+  //public rows: Array<object> = [];
   countries: Array<Countries> = [];
   countryValues!: Countries;
   addCountryValues!: AddCountry;
@@ -39,9 +51,10 @@ export class CountryListComponent implements OnInit {
   register!: UntypedFormGroup;
   modelLabelName!: string;
   countryIdSelected = 0;
+  blnSearchHasValue = false;
 
   page = 1; /*The current page.*/
-  pageSize = 10; /*Number of elements/items per page.*/
+  pageSize = 6; /*Number of elements/items per page.*/
   collectionSize = 15; /*Number of elements/items in the collection. i.e. the total number of items the pagination should handle.*/
   constructor(
     private adminService: AdminService,
@@ -58,9 +71,80 @@ export class CountryListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadControls();
-    this.loadCountries();
+    this.loadCountries('');
     //alert('Data loaded successfully!!');
     console.log(this.register);
+    window.onresize = () => {
+      this.scrollBarHorizontal = window.innerWidth < 1000;
+    };
+  }
+
+  ngAfterViewInit(): void {
+    this.loadSearch();
+  }
+
+  loadSearch() {
+    // Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+    // Add 'implements AfterViewInit' to the class.
+    fromEvent(this.search.nativeElement, 'keydown')
+      .pipe(
+        debounceTime(550),
+        map((x: any) => x['target']['value'])
+      )
+      .subscribe((value) => {
+        this.updateFilter(value);
+      });
+  }
+
+  updateFilter(val: any) {
+    if (val === '') {
+      this.blnSearchHasValue = false;
+    } else {
+      this.blnSearchHasValue = true;
+    }
+    const value = val.toString().toLowerCase().trim();
+    //alert(value);
+    const rowCount = this.temp.length;
+    // get the amount of columns in the table
+    const colCount = Object.keys(this.temp[0]).length - 2;
+
+    //alert(rowCount + ' | ' + colCount);
+    // get the key names of each column in the dataset
+    const keys = Object.keys(this.temp[0]);
+
+    // assign filtered matches to the active datatable
+    this.countries = this.temp.filter((item: any) => {
+      // iterate through each row's column data
+
+      for (let colIndx = 0; colIndx < colCount - 1; colIndx++) {
+        //alert('Index ==> ' + (colIndx + 1));
+        // check for a match
+        //alert('Specific KEY => ' + keys[1].toString());
+        // alert(
+        //   'Item-Key ==> Col => ' +
+        //     colIndx +
+        //     ' | Value => ' +
+        //     item[keys[colIndx + 1]].toString()
+        // );
+
+        if (
+          (item[keys[colIndx + 1]] &&
+            item[keys[colIndx + 1]].toString().toLowerCase().indexOf(value) !==
+              -1) ||
+          !value
+        ) {
+          // found match, return true to add to result set
+          return true;
+        }
+        // else {
+        //   return false;
+        // }
+      }
+      return false;
+    });
+
+    // Whenever the filter changes, always go back to the first page
+    // this.table.offset = 0;
   }
 
   loadControls() {
@@ -81,7 +165,7 @@ export class CountryListComponent implements OnInit {
     return this.register.controls['active'] as UntypedFormControl;
   }
 
-  loadCountries() {
+  loadCountries(loadingMode: string) {
     // this.adminService.getAllCountries().subscribe((data: Country[]) => {
     //   setTimeout(() => {
     //     this.countries = data;
@@ -91,14 +175,37 @@ export class CountryListComponent implements OnInit {
     //     this.modelLabelName = 'Add';
     //   }, 300);
     // });
-
-    this.adminService.getCountries('0').subscribe((data: IResponseData) => {
-      this.countries = data.data;
-      console.log('---------Country List----------');
-      console.log(this.countries);
-      this.loadingIndicator = false;
-      this.modelLabelName = 'Add';
-    });
+    if (loadingMode === 'refresh') {
+      if (this.temp.length > 0) {
+        this.countries = this.temp.sort((n1, n2) => {
+          if (n1 > n2) {
+            return 1;
+          }
+          if (n1 < n2) {
+            return -1;
+          }
+          return 0;
+        });
+        this.table.offset = 0;
+        this.resetControls();
+        (this.search.nativeElement as HTMLInputElement).value = '';
+        this.toastrService.success('Refreshed Successfully!', '', {
+          progressBar: true,
+        });
+        setTimeout(() => {
+          this.table.offset = 0;
+          this.table.recalculate();
+        }, 10);
+      }
+    } else {
+      this.adminService.getCountries('0').subscribe((data: IResponseData) => {
+        this.countries = this.temp = data.data;
+        console.log('---------Country List----------');
+        console.log(this.countries);
+        this.loadingIndicator = false;
+        this.modelLabelName = 'Add';
+      });
+    }
   }
 
   addRow(content: any) {
@@ -112,13 +219,9 @@ export class CountryListComponent implements OnInit {
     console.log(ngbModalOptions);
     this.modelLabelName = 'Add';
     this.modalService.open(content, ngbModalOptions);
-    // if(loadType === PageMode.add.toString())
-    // {
-    //   console.log(loadType);
-    // }
-    // else if (loadType === PageMode.edit.toString()) {
-    //   console.log(loadType);
-    // }
+    this.register.reset();
+    this.blnSearchHasValue = false;
+    (this.search.nativeElement as HTMLInputElement).value = '';
   }
 
   viewRow(content: any, dataRowId: number, tableRowIndex: number) {
@@ -177,7 +280,10 @@ export class CountryListComponent implements OnInit {
             .subscribe((data: IResponseData) => {
               console.log('DELETE => ' + data.message);
               if (data.success === true && data.statusCode === 200) {
-                this.loadCountries();
+                this.loadCountries('');
+                this.register.reset();
+                this.blnSearchHasValue = false;
+                (this.search.nativeElement as HTMLInputElement).value = '';
                 Swal.fire({
                   title: 'Deleted!',
                   text:
@@ -229,7 +335,9 @@ export class CountryListComponent implements OnInit {
               progressBar: true,
             });
             this.resetControls();
-            this.loadCountries();
+            this.loadCountries('');
+            //alert((this.search.nativeElement as HTMLInputElement).value);
+            (this.search.nativeElement as HTMLInputElement).value = '';
           }
         });
     } else if (submitMode === 'Update') {
@@ -248,8 +356,18 @@ export class CountryListComponent implements OnInit {
               this.toastrService.success('Updated successfully', '', {
                 progressBar: true,
               });
-              this.resetControls();
-              this.loadCountries();
+              this.loadCountries('');
+              if (this.blnSearchHasValue) {
+                //alert(this.blnSearchHasValue);
+                this.resetControls();
+                setTimeout(() => {
+                  this.updateFilter(
+                    (this.search.nativeElement as HTMLInputElement).value
+                  );
+                }, 10);
+              } else {
+                this.resetControls();
+              }
             }
           });
       }
@@ -259,10 +377,16 @@ export class CountryListComponent implements OnInit {
   resetControls() {
     this.register.reset();
     this.modalService.dismissAll();
+    this.blnSearchHasValue = false;
   }
 
   closeModalForm() {
-    this.resetControls();
+    //this.resetControls();
     this.modalService.dismissAll();
+    this.updateFilter((this.search.nativeElement as HTMLInputElement).value);
+  }
+
+  searchData(searchValue: string) {
+    console.log('Search value is :' + searchValue);
   }
 }
