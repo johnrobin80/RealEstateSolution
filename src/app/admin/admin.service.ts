@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, map, mergeAll } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map, mergeAll, tap } from 'rxjs';
 import {
   AddCountry,
   Countries,
@@ -16,11 +16,16 @@ export class AdminService {
   loadedPageName!: BehaviorSubject<string>;
   testSubject!: Subject<string>;
   countrySelectedDetails!: Countries;
+  isRefreshRequired = new Subject<void>();
 
   //testSubject = new Subject<string>();
   constructor(private http: HttpClient) {
     this.loadedPageName = new BehaviorSubject<string>('AdminService');
     this.testSubject = new Subject();
+  }
+
+  refreshRequired() {
+    return this.isRefreshRequired;
   }
 
   /*---------------------------------------COUNTRY------------------------------------------*/
@@ -49,20 +54,38 @@ export class AdminService {
   }
 
   addCountry(countryData: AddCountry): Observable<IResponseData> {
-    return this.http.post<IResponseData>(
-      `${environment.apiUrl}/Country/Add`,
-      countryData
-    );
+    return this.http
+      .post<IResponseData>(`${environment.apiUrl}/Country/Add`, countryData)
+      .pipe(
+        tap((result) => {
+          if (result.statusCode === 200) {
+            this.refreshRequired().next();
+          }
+        })
+      );
   }
   updateCountry(countryData: UpdateCountry): Observable<IResponseData> {
-    return this.http.put<IResponseData>(
-      `${environment.apiUrl}/Country/Update`,
-      countryData
-    );
+    return this.http
+      .put<IResponseData>(`${environment.apiUrl}/Country/Update`, countryData)
+      .pipe(
+        tap((result) => {
+          if (result.statusCode === 200) {
+            this.refreshRequired().next();
+          }
+        })
+      );
   }
   deleteCountry(countryId: number): Observable<IResponseData> {
-    return this.http.delete<IResponseData>(
-      `${environment.apiUrl}/Country/Delete/${countryId}`
-    );
+    return this.http
+      .delete<IResponseData>(
+        `${environment.apiUrl}/Country/Delete/${countryId}`
+      )
+      .pipe(
+        tap((result) => {
+          if (result.statusCode === 200) {
+            this.refreshRequired().next();
+          }
+        })
+      );
   }
 }

@@ -53,11 +53,10 @@
 
             <ngx-datatable
               #table
-              class="bootstrap ngx-datatable"
-              [columns]="columns"
+              class="material"
               [rows]="rows"
               [columnMode]="ColumnMode.force"
-              [headerHeight]="35"
+              [headerHeight]="50"
               [rowHeight]="'auto'"
               [footerHeight]="50"
               [limit]="pageSize"
@@ -67,8 +66,63 @@
               [selected]="selected"
               [selectionType]="SelectionType.single"
             >
+              <ngx-datatable-column prop="countryname">
+                <ng-template
+                  let-column="column"
+                  ngx-datatable-header-template
+                  let-sort="sortFn"
+                >
+                  <span class="tableHeader">Country</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="createdon">
+                <ng-template
+                  let-column="column"
+                  ngx-datatable-header-template
+                  let-sort="sortFn"
+                >
+                  <span class="tableHeader">Created On</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="statusname">
+                <ng-template
+                  let-column="column"
+                  ngx-datatable-header-template
+                  let-sort="sortFn"
+                >
+                  <span class="tableHeader">Status</span>
+                </ng-template>
+                <ng-template let-value="value" ngx-datatable-cell-template>
+                  <div
+                    *ngIf="value === 'Active'"
+                    class="badge-outline col-green"
+                  >
+                    {{ value }}
+                  </div>
+                  <div
+                    *ngIf="value === 'Completed'"
+                    class="badge-outline col-red"
+                  >
+                    {{ value }}
+                  </div>
+                  <div
+                    *ngIf="value === 'Pending'"
+                    class="badge-outline col-indigo"
+                  >
+                    {{ value }}
+                  </div>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [frozenRight]="true">
+                <ng-template ngx-datatable-header-template>
+                  <span class="tableHeader">Action</span>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <button>Edit</button>
+                  <button>Delete</button>
+                </ng-template>
+              </ngx-datatable-column>
             </ngx-datatable>
-            <!-- </div> -->
           </div>
         </div>
       </div>

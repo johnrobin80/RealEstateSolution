@@ -47,7 +47,7 @@ export class TestAdminComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // Initial columns, can be used for data list which is will be filtered
     this.columns = [
-      { prop: 'countryname', name: 'Countrys' },
+      { prop: 'countryname', name: 'Country' },
       { prop: 'countrycode', name: 'Code' },
       { prop: 'createdon', name: 'CreatedOn' },
       { prop: 'statusname', name: 'Status' },
@@ -88,7 +88,7 @@ export class TestAdminComponent implements OnInit, AfterViewInit {
     //alert(rowCount + ' | ' + colCount);
     // get the key names of each column in the dataset
     const keys = Object.keys(this.temp[0]);
-    alert(keys);
+    //alert(keys);
     // assign filtered matches to the active datatable
     this.rows = this.temp.filter((item: any) => {
       // iterate through each row's column data

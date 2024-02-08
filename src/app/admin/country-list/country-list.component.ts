@@ -64,19 +64,24 @@ export class CountryListComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private toastrService: ToastrService
   ) {
-    window.onresize = () => {
-      this.scrollBarHorizontal = window.innerWidth < 1000;
-    };
+    // window.onresize = () => {
+    //   this.scrollBarHorizontal = window.innerWidth < 1000;
+    // };
   }
 
   ngOnInit(): void {
     this.loadControls();
     this.loadCountries('');
+    this.adminService.refreshRequired().subscribe((response) => {
+      console.log('FROM refreshRequired()');
+      this.loadCountries('');
+    });
+
     //alert('Data loaded successfully!!');
     console.log(this.register);
-    window.onresize = () => {
-      this.scrollBarHorizontal = window.innerWidth < 1000;
-    };
+    // window.onresize = () => {
+    //   this.scrollBarHorizontal = window.innerWidth < 1000;
+    // };
   }
 
   ngAfterViewInit(): void {
@@ -166,6 +171,7 @@ export class CountryListComponent implements OnInit {
   }
 
   loadCountries(loadingMode: string) {
+    console.log('Load Countries!!!!....');
     // this.adminService.getAllCountries().subscribe((data: Country[]) => {
     //   setTimeout(() => {
     //     this.countries = data;
@@ -186,7 +192,7 @@ export class CountryListComponent implements OnInit {
           }
           return 0;
         });
-        this.table.offset = 0;
+        //this.table.offset = 0;
         this.resetControls();
         (this.search.nativeElement as HTMLInputElement).value = '';
         this.toastrService.success('Refreshed Successfully!', '', {
@@ -280,7 +286,7 @@ export class CountryListComponent implements OnInit {
             .subscribe((data: IResponseData) => {
               console.log('DELETE => ' + data.message);
               if (data.success === true && data.statusCode === 200) {
-                this.loadCountries('');
+                //this.loadCountries('');
                 this.register.reset();
                 this.blnSearchHasValue = false;
                 (this.search.nativeElement as HTMLInputElement).value = '';
@@ -335,7 +341,7 @@ export class CountryListComponent implements OnInit {
               progressBar: true,
             });
             this.resetControls();
-            this.loadCountries('');
+            //this.loadCountries('');
             //alert((this.search.nativeElement as HTMLInputElement).value);
             (this.search.nativeElement as HTMLInputElement).value = '';
           }
@@ -356,7 +362,7 @@ export class CountryListComponent implements OnInit {
               this.toastrService.success('Updated successfully', '', {
                 progressBar: true,
               });
-              this.loadCountries('');
+              //this.loadCountries('');
               if (this.blnSearchHasValue) {
                 //alert(this.blnSearchHasValue);
                 this.resetControls();

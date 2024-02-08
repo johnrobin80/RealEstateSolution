@@ -90,7 +90,7 @@
                             ><i class="material-icons search-icon"
                               >search</i
                             ></label
-                          >   
+                          >
                           <input
                             #search
                             placeholder="Search"
@@ -121,15 +121,16 @@
             </div> -->
             <!-- "countries | datafiltering : 'India' : 'countryname'" -->
             <!--class="material"
-             [scrollbarH]="scrollBarHorizontal"-->
+             [scrollbarH]="scrollBarHorizontal"  class="col-lg-10 col-md-4 col-sm-4 col-xs-4"-->
+
             <ngx-datatable
               #table
               class="material"
               [rows]="countries"
               [loadingIndicator]="loadingIndicator"
               [columnMode]="ColumnMode.force"
-              [headerHeight]="60"
-              [footerHeight]="80"
+              [headerHeight]="50"
+              [footerHeight]="50"
               rowHeight="auto"
               [limit]="pageSize"
               [reorderable]="reorderable"
@@ -139,10 +140,11 @@
                 selectedMessage: 'Selected'
               }"
               [selected]="selected"
+              [scrollbarH]="false"
               [selectionType]="SelectionType.single"
             >
               <ngx-datatable-column
-                [width]="180"
+                [width]="200"
                 prop="countryname"
                 name="Country"
               >
@@ -154,11 +156,7 @@
                   {{ value }}
                 </ng-template>
               </ngx-datatable-column>
-              <ngx-datatable-column
-                [width]="50"
-                prop="createdon"
-                name="CreatedOn"
-              >
+              <ngx-datatable-column prop="createdon" name="CreatedOn">
                 <ng-template
                   let-row="row"
                   ngx-datatable-cell-template
@@ -167,11 +165,7 @@
                   {{ value }}
                 </ng-template>
               </ngx-datatable-column>
-              <ngx-datatable-column
-                [width]="50"
-                prop="statusname"
-                name="Status"
-              >
+              <ngx-datatable-column prop="statusname" name="Status">
                 <ng-template
                   let-row="row"
                   ngx-datatable-cell-template
@@ -198,9 +192,9 @@
                 </ng-template>
               </ngx-datatable-column>
               <ngx-datatable-column
-                [width]="50"
                 name="Actions"
                 [sortable]="false"
+                [frozenRight]="true"
               >
                 <ng-template
                   let-row="row"
@@ -229,26 +223,26 @@
                 </ng-template>
               </ngx-datatable-column>
             </ngx-datatable>
-
-            <!-- <ng-container>
+          </div>
+          <!-- <ng-container>
               <div fxLayout="row wrap"></div>
               <img [src]="" />
             </ng-container> -->
 
-            <!-- Add Record Modal Window -->
-            <ng-template #addRecord let-modal>
-              <!-- <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2"> -->
-              <div class="modal-header editRowModal">
-                <h4 class="modal-title" id="modal-basic-title">
-                  <div class="table-modal-header">
-                    <div>
-                      <div class="fw-bold p-t-9 font-17">
-                        <u>{{ modelLabelName }} Country</u>
-                      </div>
+          <!-- Add Record Modal Window -->
+          <ng-template #addRecord let-modal>
+            <!-- <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2"> -->
+            <div class="modal-header editRowModal">
+              <h4 class="modal-title" id="modal-basic-title">
+                <div class="table-modal-header">
+                  <div>
+                    <div class="fw-bold p-t-9 font-17">
+                      <u>{{ modelLabelName }} Country</u>
                     </div>
                   </div>
-                </h4>
-                <!-- <button
+                </div>
+              </h4>
+              <!-- <button
                   type="button"
                   class="close"
                   aria-label="Close"
@@ -258,89 +252,88 @@
                     ><i class="material-icons">close</i></span
                   >
                 </button> -->
-                <button
-                  type="button"
-                  class="close"
-                  aria-label="Close"
-                  (click)="closeModalForm()"
+              <button
+                type="button"
+                class="close"
+                aria-label="Close"
+                (click)="closeModalForm()"
+              >
+                <span aria-hidden="true"
+                  ><i class="material-icons">close</i></span
                 >
-                  <span aria-hidden="true"
-                    ><i class="material-icons">close</i></span
-                  >
-                </button>
-              </div>
-              <div class="modal-body">
-                <form class="register-form" [formGroup]="register">
-                  <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
-                      <label>Country <span class="text-danger">*</span></label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        formControlName="country"
-                        name="country"
-                      />
-                      <small
-                        class="form-text text-danger"
-                        *ngIf="!Country.valid && Country.touched"
-                      >
-                        Country is required</small
-                      >
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-3">
-                      <label>Country Code </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        formControlName="countryCode"
-                        name="countryCode"
-                      />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        formControlName="active"
-                      />&nbsp;
-                      <label class="form-check-label" for="active">
-                        Active
-                      </label>
-                    </div>
-                  </div>
-
-                  <div class="modal-footer">
-                    <button
-                      type="submit"
-                      class="btn btn-primary"
-                      (click)="submitCountry(modelLabelName)"
-                      [disabled]="!Country.valid"
+              </button>
+            </div>
+            <div class="modal-body">
+              <form class="register-form" [formGroup]="register">
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                    <label>Country <span class="text-danger">*</span></label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="country"
+                      name="country"
+                    />
+                    <small
+                      class="form-text text-danger"
+                      *ngIf="!Country.valid && Country.touched"
                     >
-                      Submit
-                    </button>
-                    <!-- <button
+                      Country is required</small
+                    >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 mb-3">
+                    <label>Country Code </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="countryCode"
+                      name="countryCode"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      formControlName="active"
+                    />&nbsp;
+                    <label class="form-check-label" for="active">
+                      Active
+                    </label>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    (click)="submitCountry(modelLabelName)"
+                    [disabled]="!Country.valid"
+                  >
+                    Submit
+                  </button>
+                  <!-- <button
                       type="button"
                       class="btn btn-light"
                       (click)="modal.close('Close click')"
                     >
                       Close
                     </button> -->
-                    <button
-                      type="button"
-                      class="btn btn-light"
-                      (click)="closeModalForm()"
-                    >
-                      Close
-                    </button>
-                  </div>
-                </form>
-              </div>
-              <!-- </div> -->
-            </ng-template>
-          </div>
+                  <button
+                    type="button"
+                    class="btn btn-light"
+                    (click)="closeModalForm()"
+                  >
+                    Close
+                  </button>
+                </div>
+              </form>
+            </div>
+            <!-- </div> -->
+          </ng-template>
         </div>
       </div>
     </div>
