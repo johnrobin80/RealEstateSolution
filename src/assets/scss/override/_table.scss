@@ -18,7 +18,6 @@
   tbody {
     border-top: 1px solid #ececec !important;
   }
-
   &:not(.table-sm):not(.table-md):not(.dataTable) td,
   &:not(.table-sm):not(.table-md):not(.dataTable) th {
     padding: 0 10px;
@@ -26,7 +25,6 @@
     // text-align: center;
     vertical-align: middle;
   }
-
   &:not(.table-sm) thead th {
     border-bottom: none;
     background-color: #ececec;
@@ -34,12 +32,10 @@
     padding-top: 15px;
     padding-bottom: 15px;
   }
-
   &.table-md th,
   &.table-md td {
     padding: 10px 15px;
   }
-
   .team-member {
     position: relative;
     width: 30px;
@@ -47,7 +43,6 @@
     border-radius: 1000px;
     vertical-align: bottom;
     display: inline-block;
-
     img {
       width: 100%;
       max-width: 100%;
@@ -56,7 +51,6 @@
       border-radius: 1000px;
     }
   }
-
   .team-member-sm {
     width: 32px;
     -webkit-transition: all 0.25s ease;
@@ -64,7 +58,6 @@
     -moz-transition: all 0.25s ease;
     transition: all 0.25s ease;
   }
-
   .team-member-sm:hover {
     webkit-transform: translateY(-4px) scale(1.02);
     -moz-transform: translateY(-4px) scale(1.02);
@@ -75,25 +68,21 @@
     box-shadow: 0 14px 24px rgba(75, 70, 124, 0.2);
     z-index: 999;
   }
-
   .order-list li {
     img {
       border: 2px solid #ffffff;
       box-shadow: 4px 3px 6px 0 rgba(0, 0, 0, 0.2);
     }
-
     + li {
       margin-left: -14px;
       background: transparent;
     }
-
     .badge {
       background: rgba(228, 222, 222, 0.8);
       color: #6b6f82;
       margin-bottom: 6px;
     }
   }
-
   .table-img img {
     width: 35px;
     height: 35px;
@@ -111,7 +100,6 @@
   margin-top: 5px;
   opacity: 0;
   transition: all 0.3s;
-
   a {
     color: #666;
   }
@@ -124,12 +112,14 @@ table tr:hover .table-links {
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: rgba(0, 0, 0, 0.02);
 }
+
 .tblEditBtn {
   background-color: transparent !important;
   box-shadow: none !important;
   color: #4f555a;
   padding: 0px 2px !important;
 }
+
 .tblEditBtn i {
   font-size: 12px;
   position: relative;
@@ -141,6 +131,7 @@ table tr:hover .table-links {
   height: 100%;
   border-radius: 5px;
 }
+
 .tblEditBtn :hover {
   background-color: #0ba83b;
   color: #fff;
@@ -152,6 +143,7 @@ table tr:hover .table-links {
   color: #4f555a;
   padding: 0px 2px !important;
 }
+
 .tblDelBtn i {
   font-size: 12px;
   position: relative;
@@ -163,6 +155,7 @@ table tr:hover .table-links {
   height: 100%;
   border-radius: 5px;
 }
+
 .tblDelBtn :hover {
   background-color: #f86e3c;
   color: #fff;
@@ -172,12 +165,10 @@ table tr:hover .table-links {
   background: #fff;
   border: 1px solid #f5f5f5;
   box-shadow: none !important;
-
   .datatable-footer {
     .datatable-pager {
       .pager li a {
         margin: 5px;
-
         .datatable-icon-right,
         .datatable-icon-skip,
         .datatable-icon-left,
@@ -185,7 +176,6 @@ table tr:hover .table-links {
           line-height: 30px;
         }
       }
-
       li.active a {
         border: 0;
         border-radius: 30px !important;
@@ -230,12 +220,10 @@ table tr:hover .table-links {
   .datatable-body-cell {
     display: table !important;
   }
-
   .datatable-body-cell-label {
     display: table-cell !important;
     vertical-align: middle !important;
   }
-
   .datatable-header-cell {
     line-height: 2.4 !important;
   }
@@ -246,17 +234,14 @@ table tr:hover .table-links {
   display: flex;
   align-items: center;
   height: 70px;
-
   .header-buttons {
     position: absolute;
     right: 15px;
     list-style: none;
     margin: 0px 15px;
-
     li {
       display: inline-block;
     }
-
     .material-icons {
       color: #000000;
       vertical-align: text-bottom;
@@ -265,31 +250,25 @@ table tr:hover .table-links {
   .table-title {
     margin: 0px 10px;
   }
-
   .table-search-area {
     // position: absolute;
     list-style: none;
     padding: 0px;
-
     li {
       display: inline-block;
     }
-
     .searchbox {
       position: relative;
     }
-
     ::placeholder {
       color: rgba(0, 0, 0, 0.54);
     }
-
     .search-icon {
       position: absolute;
       top: 35px;
       padding-left: 10px;
       color: rgba(0, 0, 0, 0.54);
     }
-
     input.search-field {
       font-weight: 500;
       color: rgba(0, 0, 0, 0.54);
@@ -298,23 +277,19 @@ table tr:hover .table-links {
       height: 45px;
       padding: 8px 8px 8px 50px;
       background: #ffffff;
-
       &:hover {
         background: #fffefe;
       }
-
       &:focus {
         outline: none;
         // width: 380px;
         color: #212121;
-
         &:hover {
           background: #f7f7f7;
         }
       }
     }
   }
-
   .tbl-btn-style {
     clear: both;
     display: inline-block;
@@ -324,7 +299,6 @@ table tr:hover .table-links {
       margin: 0px 10px 0px 10px;
     }
   }
-
   h2 {
     margin: 0;
     font-size: 16px;
@@ -344,12 +318,10 @@ table tr:hover .table-links {
   background: #fff;
   border: 1px solid #f5f5f5;
   box-shadow: none !important;
-
   .datatable-footer {
     .datatable-pager {
       .pager li a {
         margin: 5px;
-
         .datatable-icon-right,
         .datatable-icon-skip,
         .datatable-icon-left,
@@ -357,7 +329,6 @@ table tr:hover .table-links {
           line-height: 30px;
         }
       }
-
       li.active a {
         background-color: #0d8df3;
         transition: 0.25s ease;
@@ -372,6 +343,7 @@ table tr:hover .table-links {
   margin-top: 0px;
   padding-left: 40px !important;
 }
+
 .ngx-datatable.material.single-selection
   .datatable-body-row.active
   .datatable-body-cell {
@@ -388,16 +360,15 @@ table tr:hover .table-links {
   .datatable-body-cell {
     display: table !important;
   }
-
   .datatable-body-cell-label {
     display: table-cell !important;
     vertical-align: middle !important;
   }
-
   .datatable-header-cell {
     line-height: 2.4 !important;
   }
 }
+
 .table-modal-header {
   padding: 5px;
   border-radius: 0 0.55rem 0 0;
@@ -414,15 +385,18 @@ table tr:hover .table-links {
     padding-left: 10px;
   }
 }
+
 .modal-header .close:focus {
   outline: none;
 }
+
 .datatable-body-row {
   border-bottom: 1px solid #eee;
   &:hover {
     cursor: pointer;
   }
 }
+
 .btn-tbl-edit {
   background-color: #96a2b4 !important;
   height: 30px !important;
@@ -440,10 +414,12 @@ table tr:hover .table-links {
     background-color: #96a2b4;
   }
 }
+
 .btn-tbl-edit:focus,
 .btn-tbl-edit:hover {
   color: #fff;
 }
+
 .btn-tbl-delete {
   background-color: #ff944f !important;
   height: 30px !important;
@@ -458,13 +434,36 @@ table tr:hover .table-links {
     align-items: center;
   }
 }
+
 .btn-tbl-delete:focus,
 .btn-tbl-delete:hover {
   color: #fff;
 }
-.datatable-checkbox input[type='checkbox']:before {
+
+.btn-tbl-edit {
+  background-color: #9430d6 !important;
+  height: 30px !important;
+  width: 30px !important;
+  margin: 2px !important;
+  line-height: 30px !important;
+  color: #fff;
+  border-radius: 50%;
+  i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.btn-tbl-edit:focus,
+.btn-tbl-edit:hover {
+  color: #fff;
+}
+
+.datatable-checkbox input[type="checkbox"]:before {
   border: 2px solid #807b7b;
 }
+
 .data-table-img {
   float: left;
   width: 35px;
@@ -474,6 +473,7 @@ table tr:hover .table-links {
   box-shadow: 4px 3px 6px 0 rgba(0, 0, 0, 0.2);
   margin-right: 20px;
 }
+
 .tbl-row-border {
   padding: 10px;
   border-top: 1px solid #eee;
@@ -483,12 +483,15 @@ table tr:hover .table-links {
     height: 45px !important;
   }
 }
+
 .traffic-bar {
   height: 0.5rem;
 }
+
 .search-traffic .traffic-source {
   padding: 15px 0;
 }
+
 .doc-file-type {
   .media {
     margin-bottom: 15px;
@@ -521,20 +524,25 @@ table tr:hover .table-links {
     }
   }
 }
+
 .primary-rgba {
   background-color: rgba(0, 44, 255, 0.1);
 }
+
 .success-rgba {
   background-color: rgba(95, 194, 126, 0.1);
 }
+
 .danger-rgba {
   background-color: rgba(244, 68, 85, 0.1);
 }
+
 .info-rgba {
   background-color: rgba(114, 208, 251, 0.1);
 }
+
 .status-label:before {
-  content: '';
+  content: "";
   display: inline-block;
   height: 6px;
   width: 6px;

@@ -202,8 +202,11 @@
                   ngx-datatable-cell-template
                 >
                   <span>
+                    <!-- class="btn btn-tbl-view h-auto" -->
+
                     <button
-                      class="btn btn-tbl-view h-auto"
+                      type="button"
+                      class="btn btn-tbl-edit h-auto"
                       (click)="viewRow(addRecord, row.countryid, rowIndex)"
                       placement="top"
                       ngbTooltip="view"
@@ -211,6 +214,7 @@
                       <i class="fas fa-pen"></i>
                     </button>
 
+                    <!-- class="btn btn-tbl-delete h-auto" -->
                     <button
                       class="btn btn-tbl-delete h-auto"
                       (click)="deleteCountry(row.countryid, row.countryname)"

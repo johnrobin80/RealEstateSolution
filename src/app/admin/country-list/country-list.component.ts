@@ -251,8 +251,8 @@ export class CountryListComponent implements OnInit {
         this.Active.setValue(
           data.data[0].statusname === 'Active' ? true : false
         );
+        this.modalService.open(content, ngbModalOptions);
       });
-    this.modalService.open(content, ngbModalOptions);
 
     // this.countries.forEach((x) => {
     //   x.countryid === dataRowId
