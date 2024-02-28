@@ -8,3 +8,17 @@ export interface FileUploadSource {
   webkitRelativePath: string;
   file?: string;
 }
+
+export interface FileUploadEntity {
+  attachid?: number;
+  key?: number;
+  name: string;
+  size: number;
+  filetype: string;
+  photobinary?: string;
+  isactive?: number;
+  isdefault?: number;
+  createdby?: string;
+  updatedby?: string;
+  updatedon?: string;
+}

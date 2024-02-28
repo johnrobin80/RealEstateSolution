@@ -10,26 +10,39 @@ import {
   FileSystemFileEntry,
   FileSystemDirectoryEntry,
 } from 'ngx-file-drop';
-import { FileUploadSource } from '../models/file-upload-source';
+import {
+  FileUploadEntity,
+  FileUploadSource,
+} from '../models/file-upload-source';
 import { ProjectUtilitySharingService } from 'src/app/services/project-utility-sharing.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-file-upload-dragdrop',
   templateUrl: './file-upload-dragdrop.component.html',
   styleUrls: ['./file-upload-dragdrop.component.scss'],
+  providers: [ToastrService],
 })
 export class FileUploadDragdropComponent implements OnInit, AfterViewInit {
+  imageKey = 1000;
   public files: NgxFileDropEntry[] = [];
   uploadSourceList: FileUploadSource[] = [];
+  finaldDataSource: FileUploadSource[] = [];
+  uploadDataEntity: FileUploadEntity[] = [];
   imageUrlPREVIEW: any;
   @Output() hasUploadPhotos = new EventEmitter<string>();
 
-  constructor(private prjUtlService: ProjectUtilitySharingService) {}
+  constructor(
+    private prjUtlService: ProjectUtilitySharingService,
+    private sanitizer: DomSanitizer,
+    private toastrService: ToastrService
+  ) {}
 
   public dropped(files: NgxFileDropEntry[]) {
     this.uploadSourceList = [];
     this.files = files;
-    let imageKey = 1000;
     for (const droppedFile of files) {
       // Is it a file?
       if (droppedFile.fileEntry.isFile) {
@@ -42,9 +55,9 @@ export class FileUploadDragdropComponent implements OnInit, AfterViewInit {
             reader.readAsDataURL(file);
             reader.onload = () => {
               this.imageUrlPREVIEW = reader.result;
-              imageKey += 1;
+              this.imageKey += 1;
               this.uploadSourceList.push({
-                key: imageKey,
+                key: this.imageKey,
                 lastModified: file.lastModified,
                 lastModifiedDate: '',
                 name: file.name,
@@ -53,29 +66,10 @@ export class FileUploadDragdropComponent implements OnInit, AfterViewInit {
                 webkitRelativePath: file.webkitRelativePath,
                 file: reader.result?.toString(),
               });
+              //this.uploadDataFinalList.push(...this.uploadSourceList);
               console.log('reader.result');
               console.log(reader.result);
             };
-
-            console.log(
-              '<==================== RelativePath ====================>'
-            );
-            console.log(droppedFile.relativePath);
-            console.log('<==================== FILE ====================>');
-            console.log('File ==> ' + file);
-            //console.log(droppedFile.relativePath, file);
-
-            const uploadFile = this.prepareFormData(file);
-            console.log(
-              '<==================== FUNCTION - PREPARE FORM DATA ====================>'
-            );
-            console.log(uploadFile.getAll('uploadFile'));
-            uploadFile.getAll('uploadFile').map((data: any) => {
-              console.log(
-                '<==================== FUNCTION - PREPARE FORM DATA - MAPPED DATA ====================>'
-              );
-              console.log(data.name);
-            });
           }
 
           /**
@@ -101,8 +95,28 @@ export class FileUploadDragdropComponent implements OnInit, AfterViewInit {
         console.log(droppedFile.relativePath, fileEntry);
       }
     }
-    console.log('<<<<<<<<<<<<<<<<<uploadSourceList>>>>>>>>>>>>>>>>>');
-    console.log(this.uploadSourceList);
+
+    setTimeout(() => {
+      if (this.uploadSourceList.length > 0) {
+        for (
+          let sourceIndex = 0;
+          sourceIndex <= this.uploadSourceList.length - 1;
+          sourceIndex++
+        ) {
+          this.uploadDataEntity.push({
+            key: this.uploadSourceList[sourceIndex].key,
+            name: this.uploadSourceList[sourceIndex].name,
+            size: this.uploadSourceList[sourceIndex].size,
+            filetype: this.uploadSourceList[sourceIndex].type,
+            photobinary: this.uploadSourceList[sourceIndex].file,
+          });
+        }
+        console.log(
+          'Complete upload file list from ARRAY ===> uploadDataEntity'
+        );
+        console.log(this.uploadDataEntity);
+      }
+    }, 80);
     this.setPhotoSelectionStatus();
   }
 
@@ -123,16 +137,53 @@ export class FileUploadDragdropComponent implements OnInit, AfterViewInit {
   }
 
   deletePhoto(key: number) {
-    if (confirm('The photo has been deleted!')) {
-      const index = this.uploadSourceList.findIndex((i) => i.key === key);
-      if (index > -1) {
-        this.uploadSourceList.splice(index, 1);
+    const fileDetails = this.uploadDataEntity.find((i) => i.key === key);
+    Swal.fire({
+      title: 'Delete?',
+      text:
+        'Do you want to delete the file ' +
+        '"' +
+        fileDetails?.name +
+        '"' +
+        ' ?',
+      icon: 'error',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.value) {
+        /***************************************************************************** */
+
+        // if (confirm('Do you want to deleted the image?')) {
+        const index = this.uploadDataEntity.findIndex((i) => i.key === key);
+        if (index > -1) {
+          this.uploadDataEntity.splice(index, 1);
+        }
+        console.log('Deleted!! ==> ' + key);
+        console.log(this.uploadDataEntity);
+        // } else {
+        //   console.log('Not-Deleted!');
+        // }
+        Swal.fire({
+          title: 'The file ' + '"' + fileDetails?.name + '"' + ' has deleted!',
+          text: 'deleted.',
+          icon: 'success',
+          allowOutsideClick: false,
+        });
+        this.toastrService.success(
+          'The file ' + fileDetails?.name + ' has deleted!',
+          '',
+          {
+            progressBar: true,
+          }
+        );
+        this.setPhotoSelectionStatus();
+      } else {
+        console.log('Not-Deleted - ');
       }
-      console.log('Deleted!! ==> ' + key);
-      console.log(this.uploadSourceList);
-    } else {
-      console.log('Not-Deleted!');
-    }
+    });
     this.setPhotoSelectionStatus();
   }
 
@@ -146,7 +197,7 @@ export class FileUploadDragdropComponent implements OnInit, AfterViewInit {
 
   setPhotoSelectionStatus() {
     setTimeout(() => {
-      if (this.uploadSourceList.length > 0) {
+      if (this.uploadDataEntity.length > 0) {
         this.prjUtlService.setphotoUploadedValue(true);
       } else {
         this.prjUtlService.setphotoUploadedValue(false);

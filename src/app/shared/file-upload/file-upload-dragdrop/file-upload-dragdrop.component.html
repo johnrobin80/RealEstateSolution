@@ -26,7 +26,7 @@
       </div>
     </ng-template>
   </ngx-file-drop>
-  <div *ngIf="uploadSourceList.length > 0" class="upload-table mt-2">
+  <div *ngIf="uploadDataEntity.length > 0" class="upload-table mt-2">
     <table class="table">
       <!-- <thead>
         <tr>
@@ -34,13 +34,13 @@
         </tr>
       </thead> -->
       <tbody class="upload-name-style">
-        <tr *ngFor="let item of uploadSourceList; let i = index">
+        <tr *ngFor="let item of uploadDataEntity; let i = index">
           <td>
             <strong>{{ item.name }}</strong>
           </td>
           <td>
             <div>
-              <img style="width: 30px; height: 30px" [src]="item.file" />
+              <img style="width: 30px; height: 30px" [src]="item.photobinary" />
             </div>
           </td>
           <td>
@@ -49,7 +49,9 @@
                 class="btn btn-tbl-delete h-auto"
                 placement="top"
                 ngbTooltip="delete"
-                (click)="deletePhoto(item.key)"
+                (click)="
+                  deletePhoto(item.attachid !== 0 ? item.key! : item.attachid!)
+                "
               >
                 <i class="far fa-trash-alt"></i>
               </button>
@@ -59,6 +61,19 @@
       </tbody>
     </table>
   </div>
+  <!-- <button
+    type="button"
+    class="btn btn-secondary btn-sm"
+    (click)="uploadAttachments()"
+  >
+    save
+  </button> -->
+
+  <!-- <div *ngFor="let data of uploadDataEntity">
+    <div>
+      <img style="width: 30px; height: 30px" [src]="data.photobinary" />
+    </div>
+  </div> -->
 </div>
 
 <!-- <div class="center">
