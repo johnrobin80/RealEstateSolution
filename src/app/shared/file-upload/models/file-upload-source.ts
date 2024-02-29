@@ -19,6 +19,5 @@ export interface FileUploadEntity {
   isactive?: number;
   isdefault?: number;
   createdby?: string;
-  updatedby?: string;
-  updatedon?: string;
+  createdon?: string;
 }

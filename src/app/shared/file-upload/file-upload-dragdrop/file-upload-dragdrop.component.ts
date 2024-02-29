@@ -18,6 +18,8 @@ import { ProjectUtilitySharingService } from 'src/app/services/project-utility-s
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/authentication/auth.service';
+import { PropertyService } from 'src/app/property/property.service';
 
 @Component({
   selector: 'app-file-upload-dragdrop',
@@ -32,13 +34,33 @@ export class FileUploadDragdropComponent implements OnInit, AfterViewInit {
   finaldDataSource: FileUploadSource[] = [];
   uploadDataEntity: FileUploadEntity[] = [];
   imageUrlPREVIEW: any;
-  @Output() hasUploadPhotos = new EventEmitter<string>();
+  currentUser!: string;
+  currentDate = new Date();
 
   constructor(
     private prjUtlService: ProjectUtilitySharingService,
     private sanitizer: DomSanitizer,
-    private toastrService: ToastrService
-  ) {}
+    private toastrService: ToastrService,
+    private authService: AuthService,
+    private propertyService: PropertyService
+  ) {
+    this.authService.currentUser.subscribe((data) => {
+      this.currentUser = data.firstname + ' ' + data.lastname;
+      console.log(this.currentUser);
+    });
+
+    // console.log(
+    //   'Reset flag from FileUploadDragdropComponent ===> ' +
+    //     this.propertyService.blnReadyForClearing.value
+    // );
+    this.propertyService.blnReadyForClearing.subscribe((value) => {
+      console.log('Reset flag from FileUploadDragdropComponent ===> ' + value);
+      if (value === true) {
+        this.uploadDataEntity = [];
+        this.setPhotoSelectionStatus();
+      }
+    });
+  }
 
   public dropped(files: NgxFileDropEntry[]) {
     this.uploadSourceList = [];
@@ -109,6 +131,8 @@ export class FileUploadDragdropComponent implements OnInit, AfterViewInit {
             size: this.uploadSourceList[sourceIndex].size,
             filetype: this.uploadSourceList[sourceIndex].type,
             photobinary: this.uploadSourceList[sourceIndex].file,
+            createdby: this.currentUser,
+            createdon: this.currentDate.toUTCString(),
           });
         }
         console.log(
@@ -155,7 +179,6 @@ export class FileUploadDragdropComponent implements OnInit, AfterViewInit {
     }).then((result) => {
       if (result.value) {
         /***************************************************************************** */
-
         // if (confirm('Do you want to deleted the image?')) {
         const index = this.uploadDataEntity.findIndex((i) => i.key === key);
         if (index > -1) {

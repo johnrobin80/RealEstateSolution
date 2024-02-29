@@ -19,6 +19,7 @@ import {
 import { ProjectUtilitySharingService } from 'src/app/services/project-utility-sharing.service';
 
 import Swal from 'sweetalert2';
+import { PropertyService } from '../property.service';
 
 @Component({
   selector: 'app-property-add',
@@ -32,6 +33,7 @@ export class PropertyAddComponent
   @ViewChild('stepper') stepper: any;
   @ViewChild('content') content: any;
   @ViewChild('validationList') validationList: any;
+
   basicInfo!: FormGroup;
   pricingAndArea!: FormGroup;
   address!: FormGroup;
@@ -63,7 +65,8 @@ export class PropertyAddComponent
     private _formBuilder: FormBuilder,
     private toastrService: ToastrService,
     private modalService: NgbModal,
-    private prjUtlService: ProjectUtilitySharingService
+    private prjUtlService: ProjectUtilitySharingService,
+    private propertyService: PropertyService
   ) {}
 
   ngOnInit(): void {
@@ -271,6 +274,7 @@ export class PropertyAddComponent
       if (result.value) {
         this.stepper.reset();
         this.onCreatingTheControls();
+        this.propertyService.blnReadyForClearing.next(true);
         console.log('Reset - ' + result.value);
         // Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
         Swal.fire({
