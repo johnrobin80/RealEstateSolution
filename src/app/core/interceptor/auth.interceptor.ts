@@ -77,6 +77,8 @@ export class AuthInterceptor implements HttpInterceptor {
           switch (checkErr.status) {
             case ErrorCodes.serverDown:
               return of(checkErr);
+            case ErrorCodes.unauthorized:
+              return of(checkErr);
 
             // case ErrorCodes.unauthorized:
             //   return of(checkErr);

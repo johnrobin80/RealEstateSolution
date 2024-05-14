@@ -32,14 +32,11 @@ export class ErrorInterceptor implements HttpInterceptor {
         } else {
           //Server side errors
           console.log('Server side error - ' + err.status);
+          if (err.status === 401) {
+            console.log('ErrorInterceptor 1 - ' + err.status);
+          }
           if (err.status !== 0) {
-            errorMessage = err.error.message;
-            console.log(
-              'Server side error - STATUS !==0: ' +
-                err.error.message +
-                ' | StatusCode: ' +
-                err.error.statusCode
-            );
+            console.log('ErrorInterceptor 2 - ' + err.status);
             this.authenticationService.logout();
             location.reload();
             this.router.navigate(['/authentication/signin']);
